@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--orange:#ff7600;--orange-light:#ff9d32;--orange-dark:#d94e00;--brown:#160903;--brown-2:#241006;--cream:#fff5e9}
@@ -102,18 +103,36 @@ animation:albumShine 6s ease-in-out infinite;
 @media(max-width:700px){.container{width:min(100% - 18px,1400px);padding-top:15px}.hero{padding:38px 25px;border-radius:24px}.hero h1{letter-spacing:-2px}.era-banner{padding:20px}.controls{flex-direction:column;align-items:stretch}.search-box{width:100%}.main-button{width:100%}.category-bar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.category-button{white-space:nowrap}.sort-bar{align-items:stretch}.preset-select{width:100%}.form-grid{grid-template-columns:1fr}.form-full{grid-column:auto}.admin-toast{left:12px;right:12px;bottom:12px}.coming-soon{padding:38px 20px}}
 </style>
 </head>
+
 <body>
+
 <div class="scroll-blue-bg"></div>
+
 <div class="container">
-<section class="hero"><div class="hero-content"><div class="hero-small">Unreleased Music Archive</div><h1>JOPPEPOPE<br>TRACKER</h1><p class="hero-subtitle">A personal archive of unreleased tracks, demos, ideas and forgotten sessions.</p></div></section>
+
+<section class="hero">
+<div class="hero-content">
+<div class="hero-small">Unreleased Music Archive</div>
+<h1>JOPPEPOPE<br>TRACKER</h1>
+<p class="hero-subtitle">A personal archive of unreleased tracks, demos, ideas and forgotten sessions.</p>
+</div>
+</section>
 
 <section class="era-section">
-<div class="era-banner"><div class="era-title">BEFORE THE FIRST ALBUM</div></div>
-<div class="search-box"><input id="searchInput" type="text" placeholder="Search song name..." oninput="renderTracks()"></div>
+
+<div class="era-banner">
+<div class="era-title">BEFORE THE FIRST ALBUM</div>
+</div>
+
+<div class="search-box">
+<input id="searchInput" type="text" placeholder="Search song name..." oninput="renderTracks()">
+</div>
+
 <button class="main-button" onclick="openLogin()">🔐 ADMIN</button>
 <button class="main-button" id="addButton" onclick="openAddModal()" style="display:none;">＋ ADD TRACK</button>
 <div class="admin-indicator" id="adminIndicator">ADMIN MODE</div>
-</div>
+
+</section>
 
 <div class="category-bar">
 <button id="allButton" class="category-button active" onclick="setCategory('all')">ALL TRACKS</button>
@@ -136,7 +155,17 @@ animation:albumShine 6s ease-in-out infinite;
 
 <div class="table-wrapper" id="tableWrapper">
 <table>
-<thead><tr><th>#</th><th>Name</th><th>Year</th><th>Date Made</th><th>Type / Details</th><th>Song Length</th><th>Link</th></tr></thead>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Year</th>
+<th>Date Made</th>
+<th>Type / Details</th>
+<th>Song Length</th>
+<th>Link</th>
+</tr>
+</thead>
 <tbody id="trackTable"></tbody>
 </table>
 </div>
@@ -151,37 +180,217 @@ animation:albumShine 6s ease-in-out infinite;
 <div class="album-status"><span class="status-dot"></span> TITLE • COMING SOON</div>
 </div>
 </section>
+
+</div>
+
+</div>
+
+<div class="modal-backdrop" id="loginModal">
+<div class="modal login-box">
+<h2>Admin Login</h2>
+<p class="login-message">Enter the admin password to manage the archive.</p>
+<div class="form-group">
+<label>Password</label>
+<input id="loginPassword" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
+</div>
+<div class="modal-actions">
+<button class="cancel-button" onclick="closeLogin()">Cancel</button>
+<button class="main-button" onclick="login()">Enter</button>
+</div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="trackModal">
+<div class="modal">
+<h2 id="modalTitle">Add Track</h2>
+
+<div class="form-grid">
+
+<div class="form-group form-full">
+<label>Song Name</label>
+<input id="trackName" type="text" placeholder="Untitled">
+</div>
+
+<div class="form-group">
+<label>Era</label>
+<select id="trackEra">
+<option value="before">BEFORE THE FIRST ALBUM</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Year</label>
+<input id="trackYear" type="text" placeholder="2024">
+</div>
+
+<div class="form-group">
+<label>Date Made</label>
+<input id="trackDate" type="date">
+</div>
+
+<div class="form-group">
+<label>Song Length</label>
+<input id="trackLength" type="text" placeholder="3:42">
+</div>
+
+<div class="form-group">
+<label>Category</label>
+<select id="trackCategory">
+<option value="none">No Category</option>
+<option value="best">⭐ Best Of</option>
+<option value="worst">🗑️ Worst Of</option>
+</select>
+</div>
+
+<div class="form-group form-full">
+<label>Type / Details</label>
+<input id="trackDetails" type="text" placeholder="Instrumental, Demo, Vocals...">
+</div>
+
+<div class="form-group form-full">
+<label>Link</label>
+<input id="trackLink" type="url" placeholder="https://whyp.it/...">
+</div>
+
+</div>
+
+<div class="modal-actions">
+<button class="cancel-button" onclick="closeTrackModal()">Cancel</button>
+<button class="main-button" onclick="saveTrack()">Save Track</button>
+</div>
+
 </div>
 </div>
 
-<div class="modal-backdrop" id="loginModal"><div class="modal login-box"><h2>Admin Login</h2><p class="login-message">Enter the admin password to manage the archive.</p><div class="form-group"><label>Password</label><input id="loginPassword" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') login()"></div><div class="modal-actions"><button class="cancel-button" onclick="closeLogin()">Cancel</button><button class="main-button" onclick="login()">Enter</button></div></div></div>
+<div class="context-menu" id="contextMenu">
+<button onclick="contextEdit()">✏️ Edit Track</button>
+<button onclick="contextDelete()">🗑️ Delete Track</button>
+</div>
 
-<div class="modal-backdrop" id="trackModal"><div class="modal"><h2 id="modalTitle">Add Track</h2><div class="form-grid">
-<div class="form-group form-full"><label>Song Name</label><input id="trackName" type="text" placeholder="Untitled"></div>
-<div class="form-group"><label>Era</label><select id="trackEra"><option value="before">BEFORE THE FIRST ALBUM</option></select></div>
-<div class="form-group"><label>Year</label><input id="trackYear" type="text" placeholder="2024"></div>
-<div class="form-group"><label>Date Made</label><input id="trackDate" type="date"></div>
-<div class="form-group"><label>Song Length</label><input id="trackLength" type="text" placeholder="3:42"></div>
-<div class="form-group"><label>Category</label><select id="trackCategory"><option value="none">No Category</option><option value="best">⭐ Best Of</option><option value="worst">🗑️ Worst Of</option></select></div>
-<div class="form-group form-full"><label>Type / Details</label><input id="trackDetails" type="text" placeholder="Instrumental, Demo, Vocals..."></div>
-<div class="form-group form-full"><label>Link</label><input id="trackLink" type="url" placeholder="https://whyp.it/..."></div>
-</div><div class="modal-actions"><button class="cancel-button" onclick="closeTrackModal()">Cancel</button><button class="main-button" onclick="saveTrack()">Save Track</button></div></div></div>
+<div class="admin-toast" id="adminToast">
+<div class="toast-icon">✓</div>
+<div>
+<div class="toast-title">ADMIN MODE ENABLED</div>
+<div class="toast-text">You can now edit and manage the archive.</div>
+</div>
+</div>
 
-<div class="context-menu" id="contextMenu"><button onclick="contextEdit()">✏️ Edit Track</button><button onclick="contextDelete()">🗑️ Delete Track</button></div>
-
-<div class="admin-toast" id="adminToast"><div class="toast-icon">✓</div><div><div class="toast-title">ADMIN MODE ENABLED</div><div class="toast-text">You can now edit and manage the archive.</div></div></div>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
+/* =========================================================
+   SUPABASE SETTINGS
+   =========================================================
+
+   PASTE YOUR SUPABASE PROJECT URL BETWEEN THE QUOTES.
+   PASTE YOUR SUPABASE PUBLISHABLE/ANON KEY BETWEEN THE QUOTES.
+
+   DO NOT PUT YOUR SERVICE ROLE / SECRET KEY HERE.
+   ========================================================= */
+
+const SUPABASE_URL="https://ylgkbggnrymsnyuuvksf.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_akS38WHr22fSNq7JGTNeeA_M6MhVC1y";
+
+const supabaseClient=window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+
+/* =========================================================
+   ADMIN PASSWORD
+   ========================================================= */
+
 const ADMIN_PASSWORD="start";
-const STORAGE_KEY="joppepope_tracker";
+
+
+/* =========================================================
+   DEFAULT SONGS
+   ========================================================= */
+
 const defaultTracks=[
-{name:"Untitled",year:"2023",date:"",details:"",length:"2:34",link:"",category:"none",era:"before"},
-{name:"Untitled 2",year:"2024",date:"",details:"",length:"3:12",link:"",category:"none",era:"before"},
-{name:"Untitled 3",year:"2024",date:"",details:"",length:"1:58",link:"",category:"none",era:"before"}
+{
+name:"Untitled",
+year:"2023",
+date:"",
+details:"",
+length:"2:34",
+link:"",
+category:"none",
+era:"before"
+},
+{
+name:"Untitled 2",
+year:"2024",
+date:"",
+details:"",
+length:"3:12",
+link:"",
+category:"none",
+era:"before"
+},
+{
+name:"Untitled 3",
+year:"2024",
+date:"",
+details:"",
+length:"1:58",
+link:"",
+category:"none",
+era:"before"
+}
 ];
 
-let tracks=JSON.parse(localStorage.getItem(STORAGE_KEY))||defaultTracks;
-tracks=tracks.map(t=>({
+
+/* =========================================================
+   LOCAL STORAGE
+   =========================================================
+
+   This is ONLY used as a one-time backup/migration for
+   your old PC data.
+
+   The actual shared songs are now stored in Supabase.
+   ========================================================= */
+
+const STORAGE_KEY="joppepope_tracker";
+
+let localTracks=[];
+
+try{
+const oldData=localStorage.getItem(STORAGE_KEY);
+
+if(oldData){
+localTracks=JSON.parse(oldData);
+if(!Array.isArray(localTracks))localTracks=[];
+}
+}catch(error){
+localTracks=[];
+}
+
+
+/* =========================================================
+   APP STATE
+   ========================================================= */
+
+let tracks=[];
+let isAdmin=false;
+let currentCategory="all";
+let editingIndex=null;
+let contextIndex=null;
+let renderTimer=null;
+let currentSort="default";
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function cleanTrack(t){
+
+return{
+id:t.id||null,
 name:t.name||"Untitled",
 year:t.year||"—",
 date:t.date||"",
@@ -190,105 +399,777 @@ length:t.length||"—",
 link:t.link||"",
 category:t.category||"none",
 era:"before"
-}));
+};
 
-let isAdmin=false,currentCategory="all",editingIndex=null,contextIndex=null,renderTimer=null,currentSort="default";
-
-function saveData(){localStorage.setItem(STORAGE_KEY,JSON.stringify(tracks))}
-function formatDate(date){if(!date)return"—";const p=date.split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:date}
-
-function setCategory(category){
-currentCategory=category;
-document.getElementById("allButton").classList.toggle("active",category==="all");
-document.getElementById("bestButton").classList.toggle("active",category==="best");
-document.getElementById("worstButton").classList.toggle("active",category==="worst");
-renderTracks(true)
 }
 
-function setSort(sort){currentSort=sort;renderTracks(true)}
 
-function compareTracks(a,b){
-if(currentSort==="name-az")return a.name.localeCompare(b.name);
-if(currentSort==="name-za")return b.name.localeCompare(a.name);
-if(currentSort==="year-new")return (Number(b.year)||0)-(Number(a.year)||0);
-if(currentSort==="year-old")return (Number(a.year)||0)-(Number(b.year)||0);
-if(currentSort==="date-new")return (b.date||"").localeCompare(a.date||"");
-if(currentSort==="date-old")return (a.date||"").localeCompare(b.date||"");
-return 0
+function formatDate(date){
+
+if(!date)return"—";
+
+const p=date.split("-");
+
+return p.length===3
+?p[2]+"/"+p[1]+"/"+p[0]
+:date;
+
 }
 
-function renderTracks(animated=false){
-const wrapper=document.getElementById("tableWrapper");
-if(animated){
-wrapper.classList.add("category-changing");
-clearTimeout(renderTimer);
-renderTimer=setTimeout(()=>{
-actuallyRender();
-requestAnimationFrame(()=>wrapper.classList.remove("category-changing"))
-},130);
-return
-}
-actuallyRender()
+
+function escapeHTML(v){
+
+return String(v)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
 }
 
-function actuallyRender(){
-const tbody=document.getElementById("trackTable");
-const query=document.getElementById("searchInput").value.trim().toLowerCase();
-tbody.innerHTML="";
 
-let visibleTracks=tracks.map((track,index)=>({track,index}))
-.filter(x=>x.track.name.toLowerCase().includes(query))
-.filter(x=>currentCategory==="all"||x.track.category===currentCategory);
+/* =========================================================
+   LOAD SONGS FROM SUPABASE
+   ========================================================= */
 
-visibleTracks.sort((a,b)=>compareTracks(a.track,b.track));
+async function loadTracks(){
 
-if(!visibleTracks.length){
-tbody.innerHTML=`<tr><td colspan="7"><div class="empty"><div class="empty-title">No tracks found</div><div>Try another song name.</div></div></td></tr>`;
-return
+try{
+
+const{data,error}=await supabaseClient
+.from("tracks")
+.select("*")
+.order("id",{ascending:true});
+
+if(error){
+console.error(error);
+alert("Could not connect to the song database. Check your Supabase URL and key.");
+tracks=defaultTracks.map(cleanTrack);
+renderTracks();
+return;
 }
 
-visibleTracks.forEach((item,displayIndex)=>{
-const track=item.track,realIndex=item.index,row=document.createElement("tr");
-row.ondblclick=()=>{if(isAdmin)openEditModal(realIndex)};
-row.oncontextmenu=e=>{if(!isAdmin)return;e.preventDefault();showContextMenu(e,realIndex)};
-const icon=track.category==="best"?"⭐":track.category==="worst"?"🗑️":"";
-const link=track.link?`<button class="play-button" onclick="openTrackLink(${realIndex})">▶ Listen</button>`:`<span class="muted">—</span>`;
-row.innerHTML=`<td class="track-number">${displayIndex+1}</td><td class="track-name"><span class="category-icon">${icon}</span>${escapeHTML(track.name)}</td><td>${escapeHTML(track.year)}</td><td>${formatDate(track.date)}</td><td>${track.details?escapeHTML(track.details):'<span class="muted">—</span>'}</td><td>${escapeHTML(track.length)}</td><td>${link}</td>`;
-tbody.appendChild(row)
-})
+
+/*
+   If the database is empty, use old local songs if this
+   device has them. Otherwise create the original defaults.
+*/
+
+if(!data||data.length===0){
+
+let songsToUpload=defaultTracks;
+
+if(localTracks.length>0){
+
+const localLooksLikeDefaults=
+localTracks.length===3 &&
+localTracks.every((t,i)=>
+(t.name||"")===(defaultTracks[i].name) &&
+(t.year||"")===defaultTracks[i].year &&
+(t.length||"")===defaultTracks[i].length
+);
+
+if(!localLooksLikeDefaults){
+songsToUpload=localTracks.map(cleanTrack);
 }
 
-function escapeHTML(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function openLogin(){document.getElementById("loginModal").classList.add("show");setTimeout(()=>document.getElementById("loginPassword").focus(),100)}
-function closeLogin(){document.getElementById("loginModal").classList.remove("show");document.getElementById("loginPassword").value=""}
-function login(){if(document.getElementById("loginPassword").value===ADMIN_PASSWORD){isAdmin=true;closeLogin();document.getElementById("addButton").style.display="block";document.getElementById("adminIndicator").classList.add("show");showAdminToast();renderTracks()}else alert("Wrong password.")}
-function showAdminToast(){const t=document.getElementById("adminToast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3500)}
-function openAddModal(){if(!isAdmin)return;editingIndex=null;document.getElementById("modalTitle").textContent="Add Track";["trackName","trackYear","trackDate","trackLength","trackDetails","trackLink"].forEach(id=>document.getElementById(id).value="");document.getElementById("trackCategory").value="none";document.getElementById("trackModal").classList.add("show")}
-function openEditModal(index){if(!isAdmin)return;editingIndex=index;const t=tracks[index];document.getElementById("modalTitle").textContent="Edit Track";document.getElementById("trackName").value=t.name;document.getElementById("trackYear").value=t.year;document.getElementById("trackDate").value=t.date;document.getElementById("trackLength").value=t.length;document.getElementById("trackDetails").value=t.details;document.getElementById("trackLink").value=t.link;document.getElementById("trackCategory").value=t.category;document.getElementById("trackModal").classList.add("show")}
-function closeTrackModal(){document.getElementById("trackModal").classList.remove("show")}
-function saveTrack(){
-if(!isAdmin)return;
-const t={name:document.getElementById("trackName").value.trim()||"Untitled",year:document.getElementById("trackYear").value.trim()||"—",date:document.getElementById("trackDate").value,details:document.getElementById("trackDetails").value.trim(),length:document.getElementById("trackLength").value.trim()||"—",link:document.getElementById("trackLink").value.trim(),category:document.getElementById("trackCategory").value,era:"before"};
-if(editingIndex===null)tracks.push(t);else tracks[editingIndex]=t;saveData();closeTrackModal();renderTracks()
 }
-function openTrackLink(index){const link=tracks[index].link;if(!link)return;if(link.startsWith("https://")||link.startsWith("http://"))window.open(link,"_blank");else alert("Please use a full https:// link.")}
-function showContextMenu(e,index){contextIndex=index;const m=document.getElementById("contextMenu");m.style.display="block";m.style.left=e.clientX+"px";m.style.top=e.clientY+"px"}
-function hideContextMenu(){document.getElementById("contextMenu").style.display="none"}
-function contextEdit(){if(contextIndex===null||!isAdmin)return;const i=contextIndex;hideContextMenu();openEditModal(i)}
-function contextDelete(){if(contextIndex===null||!isAdmin)return;const i=contextIndex,name=tracks[i].name;hideContextMenu();if(confirm('Delete "'+name+'"?')){tracks.splice(i,1);saveData();renderTracks()}}
-document.addEventListener("click",e=>{const m=document.getElementById("contextMenu");if(!m.contains(e.target))hideContextMenu()});
-document.getElementById("loginModal").addEventListener("click",e=>{if(e.target===e.currentTarget)closeLogin()});
-document.getElementById("trackModal").addEventListener("click",e=>{if(e.target===e.currentTarget)closeTrackModal()});
 
-const albumSection=document.getElementById("albumComingSoon");
-const albumObserver=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-document.body.classList.toggle("album-near",entry.isIntersecting);
-});
-},{threshold:.18});
-albumObserver.observe(albumSection);
+const{data:inserted,error:insertError}=await supabaseClient
+.from("tracks")
+.insert(songsToUpload.map(t=>({
+name:t.name,
+year:t.year,
+date:t.date,
+details:t.details,
+length:t.length,
+link:t.link,
+category:t.category,
+era:"before"
+})))
+.select();
+
+if(insertError){
+
+console.error(insertError);
+
+tracks=songsToUpload.map(cleanTrack);
+
+}else{
+
+tracks=(inserted||[]).map(cleanTrack);
+
+}
+
+}else{
+
+tracks=data.map(cleanTrack);
+
+}
 
 renderTracks();
+
+}catch(error){
+
+console.error(error);
+
+tracks=defaultTracks.map(cleanTrack);
+
+renderTracks();
+
+}
+
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+function setCategory(category){
+
+currentCategory=category;
+
+document.getElementById("allButton").classList.toggle(
+"active",
+category==="all"
+);
+
+document.getElementById("bestButton").classList.toggle(
+"active",
+category==="best"
+);
+
+document.getElementById("worstButton").classList.toggle(
+"active",
+category==="worst"
+);
+
+renderTracks(true);
+
+}
+
+
+/* =========================================================
+   SORT
+   ========================================================= */
+
+function setSort(sort){
+
+currentSort=sort;
+
+renderTracks(true);
+
+}
+
+
+function compareTracks(a,b){
+
+if(currentSort==="name-az")
+return a.name.localeCompare(b.name);
+
+if(currentSort==="name-za")
+return b.name.localeCompare(a.name);
+
+if(currentSort==="year-new")
+return(Number(b.year)||0)-(Number(a.year)||0);
+
+if(currentSort==="year-old")
+return(Number(a.year)||0)-(Number(b.year)||0);
+
+if(currentSort==="date-new")
+return(b.date||"").localeCompare(a.date||"");
+
+if(currentSort==="date-old")
+return(a.date||"").localeCompare(b.date||"");
+
+return 0;
+
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function renderTracks(animated=false){
+
+const wrapper=document.getElementById("tableWrapper");
+
+if(animated){
+
+wrapper.classList.add("category-changing");
+
+clearTimeout(renderTimer);
+
+renderTimer=setTimeout(()=>{
+
+actuallyRender();
+
+requestAnimationFrame(()=>{
+wrapper.classList.remove("category-changing");
+});
+
+},130);
+
+return;
+
+}
+
+actuallyRender();
+
+}
+
+
+function actuallyRender(){
+
+const tbody=document.getElementById("trackTable");
+
+const query=document
+.getElementById("searchInput")
+.value
+.trim()
+.toLowerCase();
+
+tbody.innerHTML="";
+
+
+let visibleTracks=tracks
+.map((track,index)=>({track,index}))
+.filter(x=>x.track.name.toLowerCase().includes(query))
+.filter(x=>
+currentCategory==="all" ||
+x.track.category===currentCategory
+);
+
+
+visibleTracks.sort((a,b)=>
+compareTracks(a.track,b.track)
+);
+
+
+if(!visibleTracks.length){
+
+tbody.innerHTML=`
+<tr>
+<td colspan="7">
+<div class="empty">
+<div class="empty-title">No tracks found</div>
+<div>Try another song name.</div>
+</div>
+</td>
+</tr>`;
+
+return;
+
+}
+
+
+visibleTracks.forEach((item,displayIndex)=>{
+
+const track=item.track;
+const realIndex=item.index;
+
+const row=document.createElement("tr");
+
+row.ondblclick=()=>{
+if(isAdmin)openEditModal(realIndex);
+};
+
+row.oncontextmenu=e=>{
+
+if(!isAdmin)return;
+
+e.preventDefault();
+
+showContextMenu(e,realIndex);
+
+};
+
+
+const icon=
+track.category==="best"
+?"⭐"
+:track.category==="worst"
+?"🗑️"
+:"";
+
+
+const link=track.link
+?`<button class="play-button" onclick="openTrackLink(${realIndex})">▶ Listen</button>`
+:`<span class="muted">—</span>`;
+
+
+row.innerHTML=`
+<td class="track-number">${displayIndex+1}</td>
+<td class="track-name">
+<span class="category-icon">${icon}</span>
+${escapeHTML(track.name)}
+</td>
+<td>${escapeHTML(track.year)}</td>
+<td>${formatDate(track.date)}</td>
+<td>
+${track.details
+?escapeHTML(track.details)
+:'<span class="muted">—</span>'}
+</td>
+<td>${escapeHTML(track.length)}</td>
+<td>${link}</td>
+`;
+
+
+tbody.appendChild(row);
+
+});
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function openLogin(){
+
+document
+.getElementById("loginModal")
+.classList.add("show");
+
+setTimeout(()=>{
+document.getElementById("loginPassword").focus();
+},100);
+
+}
+
+
+function closeLogin(){
+
+document
+.getElementById("loginModal")
+.classList.remove("show");
+
+document.getElementById("loginPassword").value="";
+
+}
+
+
+function login(){
+
+const password=
+document.getElementById("loginPassword").value;
+
+
+if(password===ADMIN_PASSWORD){
+
+isAdmin=true;
+
+closeLogin();
+
+document.getElementById("addButton").style.display="block";
+
+document
+.getElementById("adminIndicator")
+.classList.add("show");
+
+showAdminToast();
+
+renderTracks();
+
+}else{
+
+alert("Wrong password.");
+
+}
+
+}
+
+
+function showAdminToast(){
+
+const t=document.getElementById("adminToast");
+
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},3500);
+
+}
+
+
+/* =========================================================
+   ADD TRACK
+   ========================================================= */
+
+function openAddModal(){
+
+if(!isAdmin)return;
+
+editingIndex=null;
+
+document.getElementById("modalTitle").textContent="Add Track";
+
+[
+"trackName",
+"trackYear",
+"trackDate",
+"trackLength",
+"trackDetails",
+"trackLink"
+].forEach(id=>{
+document.getElementById(id).value="";
+});
+
+
+document.getElementById("trackCategory").value="none";
+
+document
+.getElementById("trackModal")
+.classList.add("show");
+
+}
+
+
+/* =========================================================
+   EDIT TRACK
+   ========================================================= */
+
+function openEditModal(index){
+
+if(!isAdmin)return;
+
+editingIndex=index;
+
+const t=tracks[index];
+
+document.getElementById("modalTitle").textContent="Edit Track";
+
+document.getElementById("trackName").value=t.name;
+document.getElementById("trackYear").value=t.year;
+document.getElementById("trackDate").value=t.date;
+document.getElementById("trackLength").value=t.length;
+document.getElementById("trackDetails").value=t.details;
+document.getElementById("trackLink").value=t.link;
+document.getElementById("trackCategory").value=t.category;
+
+document
+.getElementById("trackModal")
+.classList.add("show");
+
+}
+
+
+function closeTrackModal(){
+
+document
+.getElementById("trackModal")
+.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   SAVE TRACK
+   ========================================================= */
+
+async function saveTrack(){
+
+if(!isAdmin)return;
+
+
+const t={
+name:
+document.getElementById("trackName").value.trim()
+||"Untitled",
+
+year:
+document.getElementById("trackYear").value.trim()
+||"—",
+
+date:
+document.getElementById("trackDate").value,
+
+details:
+document.getElementById("trackDetails").value.trim(),
+
+length:
+document.getElementById("trackLength").value.trim()
+||"—",
+
+link:
+document.getElementById("trackLink").value.trim(),
+
+category:
+document.getElementById("trackCategory").value,
+
+era:"before"
+};
+
+
+const button=document.querySelector("#trackModal .main-button");
+
+button.disabled=true;
+button.textContent="Saving...";
+
+
+try{
+
+
+/* ADD */
+
+if(editingIndex===null){
+
+const{data,error}=await supabaseClient
+.from("tracks")
+.insert([{
+name:t.name,
+year:t.year,
+date:t.date,
+details:t.details,
+length:t.length,
+link:t.link,
+category:t.category,
+era:"before"
+}])
+.select()
+.single();
+
+
+if(error)throw error;
+
+tracks.push(cleanTrack(data));
+
+}
+
+
+/* EDIT */
+
+else{
+
+const existing=tracks[editingIndex];
+
+const{data,error}=await supabaseClient
+.from("tracks")
+.update({
+name:t.name,
+year:t.year,
+date:t.date,
+details:t.details,
+length:t.length,
+link:t.link,
+category:t.category,
+era:"before"
+})
+.eq("id",existing.id)
+.select()
+.single();
+
+
+if(error)throw error;
+
+tracks[editingIndex]=cleanTrack(data);
+
+}
+
+
+closeTrackModal();
+
+renderTracks();
+
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Could not save the track.\n\nPlease check that your Supabase database is connected."
+);
+
+}finally{
+
+button.disabled=false;
+button.textContent="Save Track";
+
+}
+
+}
+
+
+/* =========================================================
+   OPEN WHYP LINK
+   ========================================================= */
+
+function openTrackLink(index){
+
+const link=tracks[index].link;
+
+if(!link)return;
+
+if(
+link.startsWith("https://") ||
+link.startsWith("http://")
+){
+
+window.open(link,"_blank");
+
+}else{
+
+alert("Please use a full https:// link.");
+
+}
+
+}
+
+
+/* =========================================================
+   CONTEXT MENU
+   ========================================================= */
+
+function showContextMenu(e,index){
+
+contextIndex=index;
+
+const m=document.getElementById("contextMenu");
+
+m.style.display="block";
+
+m.style.left=e.clientX+"px";
+m.style.top=e.clientY+"px";
+
+}
+
+
+function hideContextMenu(){
+
+document
+.getElementById("contextMenu")
+.style.display="none";
+
+}
+
+
+function contextEdit(){
+
+if(contextIndex===null||!isAdmin)return;
+
+const i=contextIndex;
+
+hideContextMenu();
+
+openEditModal(i);
+
+}
+
+
+async function contextDelete(){
+
+if(contextIndex===null||!isAdmin)return;
+
+const i=contextIndex;
+const track=tracks[i];
+
+if(!track)return;
+
+const name=track.name;
+
+hideContextMenu();
+
+
+if(!confirm('Delete "'+name+'"?'))return;
+
+
+try{
+
+const{error}=await supabaseClient
+.from("tracks")
+.delete()
+.eq("id",track.id);
+
+if(error)throw error;
+
+tracks.splice(i,1);
+
+renderTracks();
+
+}catch(error){
+
+console.error(error);
+
+alert("Could not delete the track.");
+
+}
+
+}
+
+
+/* =========================================================
+   CLOSE MENUS
+   ========================================================= */
+
+document.addEventListener("click",e=>{
+
+const m=document.getElementById("contextMenu");
+
+if(!m.contains(e.target))
+hideContextMenu();
+
+});
+
+
+document
+.getElementById("loginModal")
+.addEventListener("click",e=>{
+
+if(e.target===e.currentTarget)
+closeLogin();
+
+});
+
+
+document
+.getElementById("trackModal")
+.addEventListener("click",e=>{
+
+if(e.target===e.currentTarget)
+closeTrackModal();
+
+});
+
+
+/* =========================================================
+   ALBUM BLUE SECTION
+   ========================================================= */
+
+const albumSection=
+document.getElementById("albumComingSoon");
+
+
+const albumObserver=
+new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+document.body.classList.toggle(
+"album-near",
+entry.isIntersecting
+);
+
+});
+
+},{threshold:.18});
+
+
+albumObserver.observe(albumSection);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadTracks();
+
 </script>
+
 </body>
 </html>
