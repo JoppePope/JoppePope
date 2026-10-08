@@ -1,0 +1,3239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JOPPEPOPE TRACKER</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+
+    color: white;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(255, 91, 0, 0.35),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(255, 166, 0, 0.20),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(255, 77, 0, 0.12),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #100604,
+            #211009 42%,
+            #0d0503
+        );
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   GLOWING BACKGROUND
+========================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    width: 650px;
+    height: 650px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 93, 0, 0.16),
+            transparent 68%
+        );
+
+    filter: blur(25px);
+
+    top: -300px;
+    left: -250px;
+
+    pointer-events: none;
+
+    z-index: 0;
+
+    animation: floatGlow 10s ease-in-out infinite alternate;
+}
+
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    width: 600px;
+    height: 600px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 151, 0, 0.12),
+            transparent 68%
+        );
+
+    filter: blur(30px);
+
+    bottom: -300px;
+    right: -250px;
+
+    pointer-events: none;
+
+    z-index: 0;
+
+    animation: floatGlow2 12s ease-in-out infinite alternate;
+}
+
+
+@keyframes floatGlow {
+
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(80px, 60px);
+    }
+
+}
+
+
+@keyframes floatGlow2 {
+
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(-70px, -50px);
+    }
+
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+
+    width: min(1280px, 94%);
+
+    margin: 0 auto;
+
+    padding: 42px 0 90px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+
+    position: relative;
+
+    padding: 58px 45px;
+
+    border-radius: 32px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            125deg,
+            #ff5700 0%,
+            #ff7200 35%,
+            #ff9500 68%,
+            #ffb300 100%
+        );
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.50),
+        0 0 70px rgba(255, 100, 0, 0.25);
+
+    margin-bottom: 28px;
+
+    animation: heroAppear 0.8s ease both;
+}
+
+
+@keyframes heroAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+.hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 430px;
+    height: 430px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.18),
+            transparent 68%
+        );
+
+    right: -150px;
+    top: -210px;
+
+    animation: heroOrb 8s ease-in-out infinite alternate;
+}
+
+
+@keyframes heroOrb {
+
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(-30px, 35px);
+    }
+
+}
+
+
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 320px;
+    height: 320px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(85, 20, 0, 0.12),
+            transparent 70%
+        );
+
+    left: 35%;
+    bottom: -250px;
+}
+
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.hero h1 {
+
+    margin: 0;
+
+    font-size: clamp(42px, 7vw, 82px);
+
+    line-height: 0.91;
+
+    font-weight: 900;
+
+    letter-spacing: -5px;
+
+    color: #1a0803;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 0 rgba(255,255,255,0.08);
+}
+
+
+.hero p {
+
+    margin: 20px 0 0;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    color: rgba(27,9,3,0.72);
+
+    letter-spacing: 1.5px;
+}
+
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 16px;
+
+    animation: contentAppear 0.7s 0.1s ease both;
+}
+
+
+@keyframes contentAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+.search {
+
+    flex: 1;
+
+    min-width: 230px;
+
+    padding: 16px 18px;
+
+    border-radius: 15px;
+
+    border: 1px solid rgba(255,255,255,0.09);
+
+    outline: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.075),
+            rgba(255,255,255,0.035)
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    backdrop-filter: blur(18px);
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+
+.search:focus {
+
+    border-color: rgba(255, 125, 0, 0.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,120,0,0.10),
+            rgba(255,255,255,0.04)
+        );
+
+    box-shadow:
+        0 0 25px rgba(255,100,0,0.10);
+}
+
+
+.search::placeholder {
+
+    color: rgba(255,255,255,0.40);
+}
+
+
+.button {
+
+    border: none;
+
+    padding: 14px 19px;
+
+    border-radius: 14px;
+
+    font-family: inherit;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        filter 0.2s;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6500,
+            #ff9d00
+        );
+
+    color: #1b0803;
+
+    box-shadow:
+        0 10px 28px rgba(255,90,0,0.20);
+}
+
+
+.button:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 15px 35px rgba(255,90,0,0.32);
+}
+
+
+.button:active {
+
+    transform: translateY(0) scale(0.98);
+}
+
+
+/* =========================
+   CATEGORY BUTTONS
+========================= */
+
+.category-buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+    animation: contentAppear 0.7s 0.15s ease both;
+}
+
+
+.category-button {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,0.075);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.025)
+        );
+
+    color: rgba(255,255,255,0.58);
+
+    padding: 11px 17px;
+
+    border-radius: 13px;
+
+    font-family: inherit;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+
+    backdrop-filter: blur(15px);
+}
+
+
+.category-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.12),
+            transparent
+        );
+
+    transform: translateX(-120%);
+
+    transition: transform 0.45s ease;
+}
+
+
+.category-button:hover::before {
+
+    transform: translateX(120%);
+}
+
+
+.category-button:hover {
+
+    color: white;
+
+    transform: translateY(-2px);
+
+    background:
+        rgba(255,255,255,0.075);
+}
+
+
+.category-button.active {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6100,
+            #ff9e00
+        );
+
+    color: #1b0803;
+
+    border-color: transparent;
+
+    box-shadow:
+        0 8px 28px rgba(255,90,0,0.23);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   ADMIN HINT
+========================= */
+
+.admin-hint {
+
+    display: none;
+
+    margin-bottom: 15px;
+
+    padding: 12px 16px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,105,0,0.11),
+            rgba(255,160,0,0.055)
+        );
+
+    border: 1px solid rgba(255,115,0,0.20);
+
+    color: #ffb16d;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    animation: adminHintIn 0.4s ease both;
+}
+
+
+body.admin-active .admin-hint {
+
+    display: block;
+}
+
+
+@keyframes adminHintIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(-7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   ERA BANNER
+========================= */
+
+.era-banner {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px 27px;
+
+    border-radius: 21px;
+
+    margin-bottom: 16px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #ff5d00,
+            #ff7800 45%,
+            #ff9e00
+        );
+
+    color: #1a0803;
+
+    font-size: 23px;
+
+    font-weight: 900;
+
+    letter-spacing: -0.5px;
+
+    box-shadow:
+        0 17px 45px rgba(255,85,0,0.22);
+}
+
+
+.era-banner::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.12);
+
+    right: -100px;
+    top: -100px;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
+
+    border-radius: 23px;
+
+    border: 1px solid rgba(255,255,255,0.075);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.025)
+        );
+
+    backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.40);
+
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+}
+
+
+.table-wrapper.category-changing {
+
+    opacity: 0;
+
+    transform:
+        translateY(7px)
+        scale(0.995);
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 1000px;
+}
+
+
+thead {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.055),
+            rgba(255,255,255,0.025)
+        );
+}
+
+
+th {
+
+    text-align: left;
+
+    padding: 17px 18px;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+
+    color: rgba(255,255,255,0.40);
+
+    white-space: nowrap;
+}
+
+
+td {
+
+    padding: 18px;
+
+    border-top: 1px solid rgba(255,255,255,0.055);
+
+    font-size: 14px;
+
+    color: rgba(255,255,255,0.88);
+
+    vertical-align: middle;
+}
+
+
+tbody tr {
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+tbody tr:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,100,0,0.065),
+            rgba(255,140,0,0.025)
+        );
+}
+
+
+tbody tr:hover td:first-child {
+
+    color: #ff8b39;
+}
+
+
+.number {
+
+    color: rgba(255,255,255,0.32);
+
+    font-weight: 900;
+
+    width: 50px;
+}
+
+
+.track-name {
+
+    font-weight: 850;
+
+    color: white;
+
+    min-width: 200px;
+}
+
+
+.track-details {
+
+    color: rgba(255,255,255,0.58);
+
+    font-weight: 600;
+
+    max-width: 230px;
+}
+
+
+.date-made {
+
+    color: rgba(255,255,255,0.64);
+
+    white-space: nowrap;
+}
+
+
+.year {
+
+    color: rgba(255,255,255,0.58);
+
+    font-weight: 750;
+}
+
+
+.length {
+
+    color: rgba(255,255,255,0.64);
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   PLAY BUTTON
+========================= */
+
+.play-button {
+
+    border: 1px solid rgba(255,120,0,0.16);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,100,0,0.15),
+            rgba(255,150,0,0.08)
+        );
+
+    color: #ff9a42;
+
+    padding: 9px 14px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        background 0.2s,
+        box-shadow 0.2s;
+
+    white-space: nowrap;
+}
+
+
+.play-button:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,100,0,0.25),
+            rgba(255,150,0,0.13)
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(255,100,0,0.14);
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+.modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,0.74);
+
+    backdrop-filter: blur(10px);
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+
+.modal.show {
+
+    display: flex;
+
+    animation: modalBackground 0.2s ease both;
+}
+
+
+@keyframes modalBackground {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+.modal-box {
+
+    width: min(540px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #291108,
+            #130705
+        );
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 35px 90px rgba(0,0,0,0.70);
+
+    animation: modalBoxIn 0.28s ease both;
+}
+
+
+@keyframes modalBoxIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+.modal-box h2 {
+
+    margin: 0 0 22px;
+
+    font-size: 26px;
+
+    letter-spacing: -0.5px;
+}
+
+
+.input-group {
+
+    margin-bottom: 15px;
+}
+
+
+.input-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.1px;
+
+    color: rgba(255,255,255,0.42);
+
+    font-weight: 900;
+}
+
+
+.input {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(255,255,255,0.055);
+
+    color: white;
+
+    outline: none;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.input:focus {
+
+    border-color: rgba(255,120,0,0.55);
+
+    box-shadow:
+        0 0 20px rgba(255,100,0,0.08);
+}
+
+
+.category-select {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: #24100a;
+
+    color: white;
+
+    outline: none;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+
+.category-select option {
+
+    background: #24100a;
+
+    color: white;
+}
+
+
+.modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 21px;
+}
+
+
+.cancel-button {
+
+    border: none;
+
+    padding: 13px 17px;
+
+    border-radius: 12px;
+
+    font-family: inherit;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    color: rgba(255,255,255,0.75);
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.cancel-button:hover {
+
+    background:
+        rgba(255,255,255,0.11);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   CONTEXT MENU
+========================= */
+
+.context-menu {
+
+    display: none;
+
+    position: fixed;
+
+    z-index: 2000;
+
+    width: 185px;
+
+    padding: 7px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #281009,
+            #150704
+        );
+
+    border: 1px solid rgba(255,255,255,0.09);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,0.65);
+
+    animation: contextIn 0.15s ease both;
+}
+
+
+@keyframes contextIn {
+
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+.context-menu button {
+
+    display: block;
+
+    width: 100%;
+
+    text-align: left;
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-weight: 750;
+}
+
+
+.context-menu button:hover {
+
+    background:
+        rgba(255,255,255,0.07);
+}
+
+
+.context-menu .delete-option {
+
+    color: #ff8b70;
+}
+
+
+/* =========================
+   ADMIN TOAST
+========================= */
+
+.admin-toast {
+
+    position: fixed;
+
+    top: 25px;
+
+    right: 25px;
+
+    z-index: 3000;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 15px 18px;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2a1109,
+            #180805
+        );
+
+    border: 1px solid rgba(255,125,0,0.35);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.55),
+        0 0 30px rgba(255,100,0,0.12);
+
+    transform: translateX(130%);
+
+    opacity: 0;
+
+    transition:
+        transform 0.4s ease,
+        opacity 0.4s ease;
+
+    pointer-events: none;
+}
+
+
+.admin-toast.show {
+
+    transform: translateX(0);
+
+    opacity: 1;
+}
+
+
+.toast-icon {
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6500,
+            #ff9d00
+        );
+
+    color: #1c0803;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 0 20px rgba(255,100,0,0.20);
+}
+
+
+.toast-title {
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.5px;
+}
+
+
+.toast-text {
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: rgba(255,255,255,0.55);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        width: 92%;
+
+        padding-top: 20px;
+    }
+
+    .hero {
+
+        padding: 42px 26px;
+
+        border-radius: 24px;
+    }
+
+    .hero h1 {
+
+        letter-spacing: -3px;
+    }
+
+    .admin-toast {
+
+        left: 15px;
+
+        right: 15px;
+
+        top: 15px;
+    }
+
+    .era-banner {
+
+        font-size: 19px;
+
+        padding: 21px;
+    }
+
+}
+
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                JOPPEPOPE<br>
+                TRACKER
+            </h1>
+
+            <p>
+                THE ARCHIVE OF THE UNRELEASED
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTROLS -->
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search"
+            placeholder="Search tracks..."
+            oninput="renderTracks()"
+        >
+
+        <button
+            class="button"
+            onclick="openLogin()"
+        >
+            ADMIN
+        </button>
+
+        <button
+            class="button"
+            id="addButton"
+            style="display:none;"
+            onclick="openAddPanel()"
+        >
+            + ADD TRACK
+        </button>
+
+    </div>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="category-buttons">
+
+        <button
+            id="allButton"
+            class="category-button active"
+            onclick="setCategory('all')"
+        >
+            ALL TRACKS
+        </button>
+
+        <button
+            id="bestButton"
+            class="category-button"
+            onclick="setCategory('best')"
+        >
+            ⭐ BEST OF
+        </button>
+
+        <button
+            id="worstButton"
+            class="category-button"
+            onclick="setCategory('worst')"
+        >
+            🗑️ WORST OF
+        </button>
+
+    </div>
+
+
+    <!-- ADMIN HINT -->
+
+    <div class="admin-hint">
+
+        ADMIN MODE • Double-click a track to edit • Right-click to manage
+
+    </div>
+
+
+    <!-- ERA -->
+
+    <div class="era-banner">
+
+        BEFORE THE FIRST ALBUM
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div
+        class="table-wrapper"
+        id="tableWrapper"
+    >
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Name</th>
+
+                    <th>Year</th>
+
+                    <th>Date Made</th>
+
+                    <th>Type / Details</th>
+
+                    <th>Song Length</th>
+
+                    <th>Link</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="trackTable"></tbody>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     LOGIN MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="loginModal"
+>
+
+    <div class="modal-box">
+
+        <h2>Admin Login</h2>
+
+        <div class="input-group">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="passwordInput"
+                class="input"
+                placeholder="Enter password"
+                onkeydown="if(event.key === 'Enter') login()"
+            >
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="button"
+                onclick="login()"
+            >
+                LOGIN
+            </button>
+
+            <button
+                class="cancel-button"
+                onclick="closeModals()"
+            >
+                CANCEL
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ADD MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="addModal"
+>
+
+    <div class="modal-box">
+
+        <h2>Add Track</h2>
+
+
+        <div class="input-group">
+
+            <label>Name</label>
+
+            <input
+                id="newName"
+                class="input"
+                placeholder="Track name"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Year</label>
+
+            <input
+                id="newYear"
+                class="input"
+                placeholder="2024"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Date Made</label>
+
+            <input
+                id="newDate"
+                class="input"
+                type="date"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Type / Details</label>
+
+            <input
+                id="newDetails"
+                class="input"
+                placeholder="Instrumental, Demo, Vocals..."
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Song Length</label>
+
+            <input
+                id="newLength"
+                class="input"
+                placeholder="2:34"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Category</label>
+
+            <select
+                id="newCategory"
+                class="category-select"
+            >
+
+                <option value="none">
+                    No category
+                </option>
+
+                <option value="best">
+                    ⭐ BEST OF
+                </option>
+
+                <option value="worst">
+                    🗑️ WORST OF
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Whyp Link</label>
+
+            <input
+                id="newLink"
+                class="input"
+                placeholder="Paste https:// link here"
+            >
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="button"
+                onclick="addTrack()"
+            >
+                ADD TRACK
+            </button>
+
+            <button
+                class="cancel-button"
+                onclick="closeModals()"
+            >
+                CANCEL
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     EDIT MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="editModal"
+>
+
+    <div class="modal-box">
+
+        <h2>Edit Track</h2>
+
+
+        <div class="input-group">
+
+            <label>Name</label>
+
+            <input
+                id="editName"
+                class="input"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Year</label>
+
+            <input
+                id="editYear"
+                class="input"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Date Made</label>
+
+            <input
+                id="editDate"
+                class="input"
+                type="date"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Type / Details</label>
+
+            <input
+                id="editDetails"
+                class="input"
+                placeholder="Instrumental, Demo, Vocals..."
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Song Length</label>
+
+            <input
+                id="editLength"
+                class="input"
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Category</label>
+
+            <select
+                id="editCategory"
+                class="category-select"
+            >
+
+                <option value="none">
+                    No category
+                </option>
+
+                <option value="best">
+                    ⭐ BEST OF
+                </option>
+
+                <option value="worst">
+                    🗑️ WORST OF
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>Whyp Link</label>
+
+            <input
+                id="editLink"
+                class="input"
+            >
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="button"
+                onclick="saveEdit()"
+            >
+                SAVE CHANGES
+            </button>
+
+            <button
+                class="cancel-button"
+                onclick="closeModals()"
+            >
+                CANCEL
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTEXT MENU
+========================= -->
+
+<div
+    class="context-menu"
+    id="contextMenu"
+>
+
+    <button onclick="contextEdit()">
+        ✏️ Edit Track
+    </button>
+
+    <button
+        class="delete-option"
+        onclick="contextDelete()"
+    >
+        🗑 Delete Track
+    </button>
+
+</div>
+
+
+<!-- =========================
+     ADMIN TOAST
+========================= -->
+
+<div
+    class="admin-toast"
+    id="adminToast"
+>
+
+    <div class="toast-icon">
+        ✓
+    </div>
+
+    <div>
+
+        <div class="toast-title">
+            ADMIN MODE ENABLED
+        </div>
+
+        <div class="toast-text">
+            You can now edit and manage the archive.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   SETTINGS
+========================= */
+
+const ADMIN_PASSWORD = "start";
+
+const STORAGE_KEY =
+    "joppepope_tracker";
+
+
+/* =========================
+   DEFAULT TRACKS
+========================= */
+
+let tracks = [
+
+    {
+        name: "Untitled",
+        year: "2023",
+        date: "",
+        details: "",
+        length: "2:34",
+        link: "",
+        category: "none"
+    },
+
+    {
+        name: "Untitled 2",
+        year: "2024",
+        date: "",
+        details: "",
+        length: "3:12",
+        link: "",
+        category: "none"
+    },
+
+    {
+        name: "Untitled 3",
+        year: "2024",
+        date: "",
+        details: "",
+        length: "1:58",
+        link: "",
+        category: "none"
+    }
+
+];
+
+
+/* =========================
+   LOAD SAVED DATA
+========================= */
+
+const savedTracks =
+    localStorage.getItem(
+        STORAGE_KEY
+    );
+
+
+if (savedTracks) {
+
+    try {
+
+        tracks =
+            JSON.parse(savedTracks);
+
+    } catch (error) {
+
+        console.log(
+            "Could not load saved tracks."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   MIGRATE OLD TRACKS
+========================= */
+
+tracks =
+    tracks.map(
+        function(track) {
+
+            return {
+
+                name:
+                    track.name ||
+                    "Untitled",
+
+                year:
+                    track.year ||
+                    "—",
+
+                date:
+                    track.date ||
+                    "",
+
+                details:
+                    track.details ||
+                    "",
+
+                length:
+                    track.length ||
+                    "—",
+
+                link:
+                    track.link ||
+                    "",
+
+                category:
+                    track.category ||
+                    "none"
+
+            };
+
+        }
+    );
+
+
+/* =========================
+   STATE
+========================= */
+
+let adminMode = false;
+
+let currentCategory = "all";
+
+let contextIndex = null;
+
+let editingIndex = null;
+
+let renderTimer = null;
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveTracks() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(tracks)
+    );
+
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+function formatDate(date) {
+
+    if (!date) {
+
+        return "—";
+
+    }
+
+    const parts =
+        date.split("-");
+
+
+    if (parts.length !== 3) {
+
+        return date;
+
+    }
+
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+    );
+
+}
+
+
+/* =========================
+   CATEGORY ICON
+========================= */
+
+function categoryIcon(category) {
+
+    if (
+        category === "best"
+    ) {
+
+        return "⭐ ";
+
+    }
+
+
+    if (
+        category === "worst"
+    ) {
+
+        return "🗑️ ";
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderTracks(
+    animated = false
+) {
+
+    const wrapper =
+        document.getElementById(
+            "tableWrapper"
+        );
+
+
+    if (
+        animated
+    ) {
+
+        wrapper.classList.add(
+            "category-changing"
+        );
+
+
+        clearTimeout(
+            renderTimer
+        );
+
+
+        renderTimer =
+            setTimeout(
+                function() {
+
+                    actuallyRender();
+
+                    requestAnimationFrame(
+                        function() {
+
+                            wrapper.classList.remove(
+                                "category-changing"
+                            );
+
+                        }
+                    );
+
+                },
+                130
+            );
+
+
+        return;
+
+    }
+
+
+    actuallyRender();
+
+}
+
+
+/* =========================
+   ACTUAL RENDER
+========================= */
+
+function actuallyRender() {
+
+    const table =
+        document.getElementById(
+            "trackTable"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    table.innerHTML = "";
+
+
+    let visibleNumber = 0;
+
+
+    tracks.forEach(
+        function(track, index) {
+
+
+            /* CATEGORY FILTER */
+
+            if (
+                currentCategory !==
+                "all"
+            ) {
+
+                if (
+                    track.category !==
+                    currentCategory
+                ) {
+
+                    return;
+
+                }
+
+            }
+
+
+            /* SEARCH */
+
+            const searchableText = (
+
+                track.name +
+                " " +
+                track.year +
+                " " +
+                track.date +
+                " " +
+                track.details +
+                " " +
+                track.length
+
+            ).toLowerCase();
+
+
+            if (
+                search &&
+                !searchableText.includes(
+                    search
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            visibleNumber++;
+
+
+            /* ROW */
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.ondblclick =
+                function() {
+
+                    if (adminMode) {
+
+                        openEditPanel(index);
+
+                    }
+
+                };
+
+
+            row.oncontextmenu =
+                function(event) {
+
+                    if (!adminMode) {
+
+                        return;
+
+                    }
+
+
+                    event.preventDefault();
+
+
+                    contextIndex =
+                        index;
+
+
+                    showContextMenu(
+                        event.clientX,
+                        event.clientY
+                    );
+
+                };
+
+
+            /* NUMBER */
+
+            const numberCell =
+                document.createElement(
+                    "td"
+                );
+
+            numberCell.className =
+                "number";
+
+            numberCell.textContent =
+                visibleNumber;
+
+
+            /* NAME */
+
+            const nameCell =
+                document.createElement(
+                    "td"
+                );
+
+            nameCell.className =
+                "track-name";
+
+            nameCell.textContent =
+                categoryIcon(
+                    track.category
+                ) +
+                track.name;
+
+
+            /* YEAR */
+
+            const yearCell =
+                document.createElement(
+                    "td"
+                );
+
+            yearCell.className =
+                "year";
+
+            yearCell.textContent =
+                track.year;
+
+
+            /* DATE */
+
+            const dateCell =
+                document.createElement(
+                    "td"
+                );
+
+            dateCell.className =
+                "date-made";
+
+            dateCell.textContent =
+                formatDate(
+                    track.date
+                );
+
+
+            /* DETAILS */
+
+            const detailsCell =
+                document.createElement(
+                    "td"
+                );
+
+            detailsCell.className =
+                "track-details";
+
+            detailsCell.textContent =
+                track.details ||
+                "—";
+
+
+            /* LENGTH */
+
+            const lengthCell =
+                document.createElement(
+                    "td"
+                );
+
+            lengthCell.className =
+                "length";
+
+            lengthCell.textContent =
+                track.length;
+
+
+            /* LINK */
+
+            const linkCell =
+                document.createElement(
+                    "td"
+                );
+
+
+            if (track.link) {
+
+                const playButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                playButton.className =
+                    "play-button";
+
+
+                playButton.textContent =
+                    "▶ Listen";
+
+
+                playButton.onclick =
+                    function() {
+
+                        window.open(
+                            track.link,
+                            "_blank"
+                        );
+
+                    };
+
+
+                linkCell.appendChild(
+                    playButton
+                );
+
+            } else {
+
+                linkCell.textContent =
+                    "—";
+
+                linkCell.style.color =
+                    "rgba(255,255,255,0.3)";
+
+            }
+
+
+            row.appendChild(
+                numberCell
+            );
+
+            row.appendChild(
+                nameCell
+            );
+
+            row.appendChild(
+                yearCell
+            );
+
+            row.appendChild(
+                dateCell
+            );
+
+            row.appendChild(
+                detailsCell
+            );
+
+            row.appendChild(
+                lengthCell
+            );
+
+            row.appendChild(
+                linkCell
+            );
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   CATEGORY SWITCH
+========================= */
+
+function setCategory(
+    category
+) {
+
+    currentCategory =
+        category;
+
+
+    document
+        .getElementById(
+            "allButton"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "bestButton"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "worstButton"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    if (
+        category ===
+        "all"
+    ) {
+
+        document
+            .getElementById(
+                "allButton"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+
+    if (
+        category ===
+        "best"
+    ) {
+
+        document
+            .getElementById(
+                "bestButton"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+
+    if (
+        category ===
+        "worst"
+    ) {
+
+        document
+            .getElementById(
+                "worstButton"
+            )
+            .classList.add(
+                "active"
+            );
+
+    }
+
+
+    renderTracks(true);
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function openLogin() {
+
+    if (adminMode) {
+
+        adminMode = false;
+
+
+        document.body.classList.remove(
+            "admin-active"
+        );
+
+
+        document.getElementById(
+            "addButton"
+        ).style.display =
+            "none";
+
+
+        renderTracks();
+
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "loginModal"
+        )
+        .classList.add(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "passwordInput"
+        )
+        .focus();
+
+}
+
+
+/* =========================
+   LOGIN CHECK
+========================= */
+
+function login() {
+
+    const password =
+        document.getElementById(
+            "passwordInput"
+        ).value;
+
+
+    if (
+        password ===
+        ADMIN_PASSWORD
+    ) {
+
+        adminMode = true;
+
+
+        document.body.classList.add(
+            "admin-active"
+        );
+
+
+        document.getElementById(
+            "addButton"
+        ).style.display =
+            "block";
+
+
+        closeModals();
+
+
+        showAdminToast();
+
+
+        renderTracks();
+
+    } else {
+
+        document.getElementById(
+            "passwordInput"
+        ).value = "";
+
+
+        alert(
+            "Incorrect password."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ADMIN TOAST
+========================= */
+
+function showAdminToast() {
+
+    const toast =
+        document.getElementById(
+            "adminToast"
+        );
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        function() {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================
+   ADD PANEL
+========================= */
+
+function openAddPanel() {
+
+    if (!adminMode) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "newName"
+    ).value = "";
+
+
+    document.getElementById(
+        "newYear"
+    ).value = "";
+
+
+    document.getElementById(
+        "newDate"
+    ).value = "";
+
+
+    document.getElementById(
+        "newDetails"
+    ).value = "";
+
+
+    document.getElementById(
+        "newLength"
+    ).value = "";
+
+
+    document.getElementById(
+        "newCategory"
+    ).value = "none";
+
+
+    document.getElementById(
+        "newLink"
+    ).value = "";
+
+
+    document
+        .getElementById(
+            "addModal"
+        )
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+/* =========================
+   ADD TRACK
+========================= */
+
+function addTrack() {
+
+    const name =
+        document.getElementById(
+            "newName"
+        ).value.trim();
+
+
+    const year =
+        document.getElementById(
+            "newYear"
+        ).value.trim();
+
+
+    const date =
+        document.getElementById(
+            "newDate"
+        ).value;
+
+
+    const details =
+        document.getElementById(
+            "newDetails"
+        ).value.trim();
+
+
+    const length =
+        document.getElementById(
+            "newLength"
+        ).value.trim();
+
+
+    const category =
+        document.getElementById(
+            "newCategory"
+        ).value;
+
+
+    const link =
+        document.getElementById(
+            "newLink"
+        ).value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter a track name."
+        );
+
+        return;
+
+    }
+
+
+    tracks.push({
+
+        name:
+            name,
+
+        year:
+            year ||
+            "—",
+
+        date:
+            date,
+
+        details:
+            details,
+
+        length:
+            length ||
+            "—",
+
+        link:
+            link,
+
+        category:
+            category
+
+    });
+
+
+    saveTracks();
+
+
+    closeModals();
+
+
+    renderTracks();
+
+}
+
+
+/* =========================
+   EDIT PANEL
+========================= */
+
+function openEditPanel(
+    index
+) {
+
+    if (!adminMode) {
+
+        return;
+
+    }
+
+
+    editingIndex =
+        index;
+
+
+    const track =
+        tracks[index];
+
+
+    document.getElementById(
+        "editName"
+    ).value =
+        track.name;
+
+
+    document.getElementById(
+        "editYear"
+    ).value =
+        track.year;
+
+
+    document.getElementById(
+        "editDate"
+    ).value =
+        track.date || "";
+
+
+    document.getElementById(
+        "editDetails"
+    ).value =
+        track.details || "";
+
+
+    document.getElementById(
+        "editLength"
+    ).value =
+        track.length;
+
+
+    document.getElementById(
+        "editCategory"
+    ).value =
+        track.category;
+
+
+    document.getElementById(
+        "editLink"
+    ).value =
+        track.link;
+
+
+    document
+        .getElementById(
+            "editModal"
+        )
+        .classList.add(
+            "show"
+        );
+
+}
+
+
+/* =========================
+   SAVE EDIT
+========================= */
+
+function saveEdit() {
+
+    if (
+        editingIndex ===
+        null
+    ) {
+
+        return;
+
+    }
+
+
+    tracks[editingIndex] = {
+
+        name:
+            document.getElementById(
+                "editName"
+            ).value.trim(),
+
+        year:
+            document.getElementById(
+                "editYear"
+            ).value.trim() ||
+            "—",
+
+        date:
+            document.getElementById(
+                "editDate"
+            ).value,
+
+        details:
+            document.getElementById(
+                "editDetails"
+            ).value.trim(),
+
+        length:
+            document.getElementById(
+                "editLength"
+            ).value.trim() ||
+            "—",
+
+        category:
+            document.getElementById(
+                "editCategory"
+            ).value,
+
+        link:
+            document.getElementById(
+                "editLink"
+            ).value.trim()
+
+    };
+
+
+    saveTracks();
+
+
+    editingIndex =
+        null;
+
+
+    closeModals();
+
+
+    renderTracks();
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deleteTrack(
+    index
+) {
+
+    if (!adminMode) {
+
+        return;
+
+    }
+
+
+    tracks.splice(
+        index,
+        1
+    );
+
+
+    saveTracks();
+
+
+    renderTracks();
+
+}
+
+
+/* =========================
+   CONTEXT MENU
+========================= */
+
+function showContextMenu(
+    x,
+    y
+) {
+
+    const menu =
+        document.getElementById(
+            "contextMenu"
+        );
+
+
+    menu.style.display =
+        "block";
+
+
+    menu.style.left =
+        x + "px";
+
+
+    menu.style.top =
+        y + "px";
+
+}
+
+
+function contextEdit() {
+
+    if (
+        contextIndex ===
+        null
+    ) {
+
+        return;
+
+    }
+
+
+    const index =
+        contextIndex;
+
+
+    hideContextMenu();
+
+
+    openEditPanel(
+        index
+    );
+
+}
+
+
+function contextDelete() {
+
+    if (
+        contextIndex ===
+        null
+    ) {
+
+        return;
+
+    }
+
+
+    const index =
+        contextIndex;
+
+
+    hideContextMenu();
+
+
+    deleteTrack(
+        index
+    );
+
+}
+
+
+function hideContextMenu() {
+
+    document.getElementById(
+        "contextMenu"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================
+   CLOSE MODALS
+========================= */
+
+function closeModals() {
+
+    document
+        .getElementById(
+            "loginModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "addModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "editModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+/* =========================
+   CLICK OUTSIDE
+========================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "modal"
+            )
+        ) {
+
+            closeModals();
+
+        }
+
+
+        hideContextMenu();
+
+    }
+);
+
+
+/* =========================
+   INITIAL RENDER
+========================= */
+
+renderTracks();
+
+</script>
+
+</body>
+</html>
