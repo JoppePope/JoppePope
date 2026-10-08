@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,20 +8,23 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
-/* =========================
-   BASE
-========================= */
-
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --orange: #ff7600;
+    --orange-light: #ff9d32;
+    --orange-dark: #d94e00;
+    --brown: #160903;
+    --brown-2: #241006;
+    --cream: #fff5e9;
 }
 
 html {
@@ -30,929 +32,551 @@ html {
 }
 
 body {
-
-    margin: 0;
-
-    font-family: "Inter", sans-serif;
-
-    color: white;
-
     min-height: 100vh;
-
+    font-family: "Inter", Arial, sans-serif;
+    color: var(--cream);
     background:
-        radial-gradient(
-            circle at 10% 5%,
-            rgba(255, 91, 0, 0.35),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 90% 15%,
-            rgba(255, 166, 0, 0.20),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(255, 77, 0, 0.12),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #100604,
-            #211009 42%,
-            #0d0503
-        );
-
+        radial-gradient(circle at 15% 15%, rgba(255, 115, 0, 0.25), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(255, 65, 0, 0.18), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(255, 160, 0, 0.15), transparent 35%),
+        linear-gradient(135deg, #0d0502, #241006 45%, #100502);
+    background-size: 180% 180%;
+    animation: backgroundMove 20s ease-in-out infinite alternate;
     overflow-x: hidden;
+    position: relative;
 }
 
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    35% {
+        background-position: 80% 25%;
+    }
+
+    70% {
+        background-position: 25% 80%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
 
 /* =========================
-   GLOWING BACKGROUND
+   FLOATING LIGHTS
 ========================= */
 
-body::before {
-
+body::before,
+body::after {
     content: "";
-
     position: fixed;
-
-    width: 650px;
-    height: 650px;
-
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255, 93, 0, 0.16),
-            transparent 68%
-        );
-
-    filter: blur(25px);
-
-    top: -300px;
-    left: -250px;
-
     pointer-events: none;
-
-    z-index: 0;
-
-    animation: floatGlow 10s ease-in-out infinite alternate;
+    z-index: -1;
+    filter: blur(100px);
+    opacity: 0.25;
 }
 
+body::before {
+    background: #ff7100;
+    top: -180px;
+    left: -180px;
+    animation: glowOne 15s ease-in-out infinite alternate;
+}
 
 body::after {
-
-    content: "";
-
-    position: fixed;
-
-    width: 600px;
-    height: 600px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255, 151, 0, 0.12),
-            transparent 68%
-        );
-
-    filter: blur(30px);
-
-    bottom: -300px;
-    right: -250px;
-
-    pointer-events: none;
-
-    z-index: 0;
-
-    animation: floatGlow2 12s ease-in-out infinite alternate;
+    background: #ff3c00;
+    right: -200px;
+    bottom: -180px;
+    animation: glowTwo 18s ease-in-out infinite alternate;
 }
 
-
-@keyframes floatGlow {
-
-    from {
-        transform: translate(0, 0);
+@keyframes glowOne {
+    0% {
+        transform: translate(0, 0) scale(0.8);
     }
 
-    to {
-        transform: translate(80px, 60px);
+    50% {
+        transform: translate(230px, 160px) scale(1.3);
     }
 
+    100% {
+        transform: translate(60px, 420px) scale(1);
+    }
 }
 
-
-@keyframes floatGlow2 {
-
-    from {
-        transform: translate(0, 0);
+@keyframes glowTwo {
+    0% {
+        transform: translate(0, 0) scale(1);
     }
 
-    to {
-        transform: translate(-70px, -50px);
+    50% {
+        transform: translate(-220px, -160px) scale(1.35);
     }
 
+    100% {
+        transform: translate(-80px, -320px) scale(0.85);
+    }
 }
-
 
 /* =========================
-   MAIN
+   MAIN CONTAINER
 ========================= */
 
 .container {
-
-    width: min(1280px, 94%);
-
+    width: min(1400px, calc(100% - 32px));
     margin: 0 auto;
-
-    padding: 42px 0 90px;
-
-    position: relative;
-
-    z-index: 2;
+    padding: 35px 0 80px;
 }
-
 
 /* =========================
    HERO
 ========================= */
 
 .hero {
-
     position: relative;
-
-    padding: 58px 45px;
-
-    border-radius: 32px;
-
     overflow: hidden;
+    border-radius: 32px;
+    padding: 55px 45px;
+    margin-bottom: 25px;
 
     background:
         linear-gradient(
-            125deg,
-            #ff5700 0%,
-            #ff7200 35%,
-            #ff9500 68%,
-            #ffb300 100%
+            135deg,
+            rgba(255, 137, 25, 0.98),
+            rgba(220, 73, 0, 0.98)
         );
 
     box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.50),
-        0 0 70px rgba(255, 100, 0, 0.25);
+        0 30px 80px rgba(0, 0, 0, 0.45),
+        0 0 60px rgba(255, 100, 0, 0.18);
 
-    margin-bottom: 28px;
-
-    animation: heroAppear 0.8s ease both;
+    animation: heroAppear 0.9s ease-out;
 }
 
-
 @keyframes heroAppear {
-
     from {
         opacity: 0;
-        transform: translateY(18px) scale(0.985);
+        transform: translateY(20px) scale(0.98);
     }
 
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-
 }
 
-
 .hero::before {
-
     content: "";
-
     position: absolute;
-
-    width: 430px;
-    height: 430px;
-
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,0.18),
-            transparent 68%
-        );
-
-    right: -150px;
-    top: -210px;
-
+    background: rgba(255,255,255,0.10);
+    right: -120px;
+    top: -180px;
     animation: heroOrb 8s ease-in-out infinite alternate;
 }
 
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    left: 45%;
+    bottom: -180px;
+}
 
 @keyframes heroOrb {
-
     from {
-        transform: translate(0, 0);
+        transform: translate(0, 0) scale(1);
     }
 
     to {
-        transform: translate(-30px, 35px);
+        transform: translate(-80px, 80px) scale(1.25);
     }
-
 }
-
-
-.hero::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 320px;
-    height: 320px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(85, 20, 0, 0.12),
-            transparent 70%
-        );
-
-    left: 35%;
-    bottom: -250px;
-}
-
 
 .hero-content {
-
     position: relative;
-
     z-index: 2;
 }
 
+.hero-small {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 12px;
+}
 
 .hero h1 {
-
-    margin: 0;
-
-    font-size: clamp(42px, 7vw, 82px);
-
-    line-height: 0.91;
-
+    font-size: clamp(38px, 7vw, 88px);
+    line-height: 0.95;
     font-weight: 900;
-
-    letter-spacing: -5px;
-
-    color: #1a0803;
-
-    text-transform: uppercase;
-
-    text-shadow:
-        0 2px 0 rgba(255,255,255,0.08);
+    letter-spacing: -4px;
+    color: #fff9f0;
+    text-shadow: 0 5px 20px rgba(80, 25, 0, 0.25);
 }
 
-
-.hero p {
-
-    margin: 20px 0 0;
-
-    font-size: 14px;
-
-    font-weight: 800;
-
-    color: rgba(27,9,3,0.72);
-
-    letter-spacing: 1.5px;
+.hero-subtitle {
+    margin-top: 20px;
+    max-width: 650px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.82);
 }
-
-
-/* =========================
-   CONTROLS
-========================= */
-
-.controls {
-
-    display: flex;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-
-    margin-bottom: 16px;
-
-    animation: contentAppear 0.7s 0.1s ease both;
-}
-
-
-@keyframes contentAppear {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-.search {
-
-    flex: 1;
-
-    min-width: 230px;
-
-    padding: 16px 18px;
-
-    border-radius: 15px;
-
-    border: 1px solid rgba(255,255,255,0.09);
-
-    outline: none;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.075),
-            rgba(255,255,255,0.035)
-        );
-
-    color: white;
-
-    font-size: 14px;
-
-    font-family: inherit;
-
-    backdrop-filter: blur(18px);
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s,
-        background 0.2s;
-}
-
-
-.search:focus {
-
-    border-color: rgba(255, 125, 0, 0.55);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,120,0,0.10),
-            rgba(255,255,255,0.04)
-        );
-
-    box-shadow:
-        0 0 25px rgba(255,100,0,0.10);
-}
-
-
-.search::placeholder {
-
-    color: rgba(255,255,255,0.40);
-}
-
-
-.button {
-
-    border: none;
-
-    padding: 14px 19px;
-
-    border-radius: 14px;
-
-    font-family: inherit;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s,
-        box-shadow 0.2s,
-        filter 0.2s;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6500,
-            #ff9d00
-        );
-
-    color: #1b0803;
-
-    box-shadow:
-        0 10px 28px rgba(255,90,0,0.20);
-}
-
-
-.button:hover {
-
-    transform: translateY(-2px);
-
-    filter: brightness(1.08);
-
-    box-shadow:
-        0 15px 35px rgba(255,90,0,0.32);
-}
-
-
-.button:active {
-
-    transform: translateY(0) scale(0.98);
-}
-
-
-/* =========================
-   CATEGORY BUTTONS
-========================= */
-
-.category-buttons {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-bottom: 22px;
-
-    animation: contentAppear 0.7s 0.15s ease both;
-}
-
-
-.category-button {
-
-    position: relative;
-
-    overflow: hidden;
-
-    border: 1px solid rgba(255,255,255,0.075);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.055),
-            rgba(255,255,255,0.025)
-        );
-
-    color: rgba(255,255,255,0.58);
-
-    padding: 11px 17px;
-
-    border-radius: 13px;
-
-    font-family: inherit;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        color 0.25s ease,
-        box-shadow 0.25s ease;
-
-    backdrop-filter: blur(15px);
-}
-
-
-.category-button::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,0.12),
-            transparent
-        );
-
-    transform: translateX(-120%);
-
-    transition: transform 0.45s ease;
-}
-
-
-.category-button:hover::before {
-
-    transform: translateX(120%);
-}
-
-
-.category-button:hover {
-
-    color: white;
-
-    transform: translateY(-2px);
-
-    background:
-        rgba(255,255,255,0.075);
-}
-
-
-.category-button.active {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6100,
-            #ff9e00
-        );
-
-    color: #1b0803;
-
-    border-color: transparent;
-
-    box-shadow:
-        0 8px 28px rgba(255,90,0,0.23);
-
-    transform: translateY(-1px);
-}
-
-
-/* =========================
-   ADMIN HINT
-========================= */
-
-.admin-hint {
-
-    display: none;
-
-    margin-bottom: 15px;
-
-    padding: 12px 16px;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,105,0,0.11),
-            rgba(255,160,0,0.055)
-        );
-
-    border: 1px solid rgba(255,115,0,0.20);
-
-    color: #ffb16d;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    animation: adminHintIn 0.4s ease both;
-}
-
-
-body.admin-active .admin-hint {
-
-    display: block;
-}
-
-
-@keyframes adminHintIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(-7px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
 
 /* =========================
    ERA BANNER
 ========================= */
 
 .era-banner {
-
     position: relative;
-
     overflow: hidden;
 
-    padding: 25px 27px;
-
-    border-radius: 21px;
-
-    margin-bottom: 16px;
+    border-radius: 22px;
+    padding: 25px 30px;
+    margin-bottom: 18px;
 
     background:
         linear-gradient(
             120deg,
-            #ff5d00,
-            #ff7800 45%,
-            #ff9e00
+            rgba(255, 120, 0, 0.95),
+            rgba(255, 77, 0, 0.95)
         );
 
-    color: #1a0803;
-
-    font-size: 23px;
-
-    font-weight: 900;
-
-    letter-spacing: -0.5px;
-
     box-shadow:
-        0 17px 45px rgba(255,85,0,0.22);
+        0 18px 45px rgba(0,0,0,0.25),
+        0 0 30px rgba(255,100,0,0.12);
+
+    animation: bannerAppear 0.8s ease-out;
 }
 
+@keyframes bannerAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .era-banner::after {
-
     content: "";
-
     position: absolute;
-
-    width: 200px;
-    height: 200px;
-
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-
-    background: rgba(255,255,255,0.12);
-
-    right: -100px;
-    top: -100px;
+    right: -60px;
+    top: -80px;
+    background: rgba(255,255,255,0.08);
 }
 
+.era-title {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(22px, 4vw, 38px);
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 230px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.08);
+    outline: none;
+
+    background: rgba(255,255,255,0.055);
+    backdrop-filter: blur(20px);
+
+    color: white;
+    padding: 15px 18px;
+    border-radius: 16px;
+
+    font-size: 14px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 10px 30px rgba(0,0,0,0.18);
+
+    transition: 0.25s ease;
+}
+
+.search-box input::placeholder {
+    color: rgba(255,255,255,0.45);
+}
+
+.search-box input:focus {
+    border-color: rgba(255,130,0,0.65);
+    box-shadow:
+        0 0 0 4px rgba(255,115,0,0.08),
+        0 10px 35px rgba(0,0,0,0.22);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    font-family: inherit;
+}
+
+.main-button,
+.category-button {
+    border: 0;
+    cursor: pointer;
+    color: white;
+
+    padding: 14px 18px;
+    border-radius: 15px;
+
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.main-button {
+    background: linear-gradient(135deg, #ff8a16, #e24e00);
+
+    box-shadow:
+        0 10px 25px rgba(255,100,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.main-button:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 16px 35px rgba(255,100,0,0.28),
+        0 0 25px rgba(255,100,0,0.12);
+}
+
+.category-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 20px;
+}
+
+.category-button {
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(15px);
+}
+
+.category-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(255,125,0,0.13);
+
+    box-shadow:
+        0 10px 30px rgba(255,100,0,0.18);
+}
+
+.category-button.active {
+    background: linear-gradient(135deg, #ff8a16, #df4e00);
+    border-color: transparent;
+
+    box-shadow:
+        0 10px 30px rgba(255,100,0,0.22);
+}
 
 /* =========================
    TABLE
 ========================= */
 
 .table-wrapper {
-
     overflow-x: auto;
+    border-radius: 24px;
 
-    border-radius: 23px;
-
-    border: 1px solid rgba(255,255,255,0.075);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.055),
-            rgba(255,255,255,0.025)
-        );
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
 
     backdrop-filter: blur(22px);
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,0.40);
+        0 25px 70px rgba(0,0,0,0.35);
 
     transition:
-        opacity 0.22s ease,
-        transform 0.22s ease;
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.35s ease;
 }
 
+.table-wrapper:hover {
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.40),
+        0 0 40px rgba(255,110,0,0.06);
+}
 
 .table-wrapper.category-changing {
-
     opacity: 0;
-
-    transform:
-        translateY(7px)
-        scale(0.995);
+    transform: translateY(8px) scale(0.995);
 }
-
 
 table {
-
     width: 100%;
-
     border-collapse: collapse;
-
-    min-width: 1000px;
+    min-width: 950px;
 }
-
 
 thead {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.055),
-            rgba(255,255,255,0.025)
-        );
+    background: rgba(255,112,0,0.12);
 }
-
 
 th {
-
+    padding: 18px 15px;
     text-align: left;
 
-    padding: 17px 18px;
-
     font-size: 10px;
-
+    font-weight: 900;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
 
-    letter-spacing: 1.2px;
+    color: rgba(255,190,130,0.85);
 
-    color: rgba(255,255,255,0.40);
-
-    white-space: nowrap;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-
 
 td {
+    padding: 17px 15px;
 
-    padding: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.045);
 
-    border-top: 1px solid rgba(255,255,255,0.055);
+    font-size: 13px;
+    color: rgba(255,245,235,0.86);
 
-    font-size: 14px;
-
-    color: rgba(255,255,255,0.88);
-
-    vertical-align: middle;
+    transition: background 0.2s ease;
 }
-
 
 tbody tr {
-
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        background 0.2s ease;
 }
-
 
 tbody tr:hover {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,100,0,0.065),
-            rgba(255,140,0,0.025)
-        );
+    background: rgba(255,115,0,0.065);
 }
 
-
-tbody tr:hover td:first-child {
-
-    color: #ff8b39;
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
-
-.number {
-
-    color: rgba(255,255,255,0.32);
-
-    font-weight: 900;
-
-    width: 50px;
+.track-number {
+    color: rgba(255,160,80,0.6);
+    font-weight: 800;
 }
-
 
 .track-name {
-
-    font-weight: 850;
-
     color: white;
-
-    min-width: 200px;
+    font-weight: 800;
 }
 
-
-.track-details {
-
-    color: rgba(255,255,255,0.58);
-
-    font-weight: 600;
-
-    max-width: 230px;
+.category-icon {
+    display: inline-block;
+    margin-right: 7px;
 }
 
-
-.date-made {
-
-    color: rgba(255,255,255,0.64);
-
-    white-space: nowrap;
+.muted {
+    color: rgba(255,255,255,0.42);
 }
-
-
-.year {
-
-    color: rgba(255,255,255,0.58);
-
-    font-weight: 750;
-}
-
-
-.length {
-
-    color: rgba(255,255,255,0.64);
-
-    white-space: nowrap;
-}
-
-
-/* =========================
-   PLAY BUTTON
-========================= */
 
 .play-button {
-
-    border: 1px solid rgba(255,120,0,0.16);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,100,0,0.15),
-            rgba(255,150,0,0.08)
-        );
-
-    color: #ff9a42;
-
-    padding: 9px 14px;
-
-    border-radius: 10px;
-
-    font-family: inherit;
-
-    font-weight: 900;
-
+    border: 0;
     cursor: pointer;
 
-    transition:
-        transform 0.2s,
-        background 0.2s,
-        box-shadow 0.2s;
+    padding: 9px 13px;
+    border-radius: 11px;
 
-    white-space: nowrap;
+    background: rgba(255,115,0,0.12);
+    color: #ff9c3b;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    transition: 0.2s ease;
 }
-
 
 .play-button:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,100,0,0.25),
-            rgba(255,150,0,0.13)
-        );
-
+    background: rgba(255,115,0,0.22);
     transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 20px rgba(255,100,0,0.14);
 }
 
-
 /* =========================
-   MODALS
+   EMPTY STATE
 ========================= */
 
-.modal {
+.empty {
+    text-align: center;
+    padding: 55px 20px;
+    color: rgba(255,255,255,0.4);
+}
 
-    display: none;
+.empty-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 7px;
+}
 
+/* =========================
+   MODAL
+========================= */
+
+.modal-backdrop {
     position: fixed;
-
     inset: 0;
 
-    background:
-        rgba(0,0,0,0.74);
-
-    backdrop-filter: blur(10px);
-
+    display: none;
     align-items: center;
-
     justify-content: center;
 
     padding: 20px;
 
+    background: rgba(5,2,1,0.72);
+    backdrop-filter: blur(14px);
+
     z-index: 1000;
 }
 
-
-.modal.show {
-
+.modal-backdrop.show {
     display: flex;
-
-    animation: modalBackground 0.2s ease both;
+    animation: fadeIn 0.2s ease;
 }
 
-
-@keyframes modalBackground {
-
+@keyframes fadeIn {
     from {
         opacity: 0;
     }
@@ -960,40 +584,32 @@ tbody tr:hover td:first-child {
     to {
         opacity: 1;
     }
-
 }
 
+.modal {
+    width: min(560px, 100%);
 
-.modal-box {
-
-    width: min(540px, 100%);
-
-    max-height: 90vh;
-
-    overflow-y: auto;
-
-    padding: 30px;
+    padding: 28px;
 
     border-radius: 25px;
 
     background:
         linear-gradient(
             145deg,
-            #291108,
-            #130705
+            rgba(44,18,7,0.98),
+            rgba(20,8,3,0.98)
         );
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,135,0,0.18);
 
     box-shadow:
-        0 35px 90px rgba(0,0,0,0.70);
+        0 35px 100px rgba(0,0,0,0.65),
+        0 0 50px rgba(255,90,0,0.08);
 
-    animation: modalBoxIn 0.28s ease both;
+    animation: modalIn 0.25s ease;
 }
 
-
-@keyframes modalBoxIn {
-
+@keyframes modalIn {
     from {
         opacity: 0;
         transform: translateY(15px) scale(0.97);
@@ -1003,188 +619,119 @@ tbody tr:hover td:first-child {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-
 }
 
-
-.modal-box h2 {
-
-    margin: 0 0 22px;
-
-    font-size: 26px;
-
-    letter-spacing: -0.5px;
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 23px;
 }
 
-
-.input-group {
-
-    margin-bottom: 15px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
 }
 
+.form-full {
+    grid-column: 1 / -1;
+}
 
-.input-group label {
-
+.form-group label {
     display: block;
 
     margin-bottom: 7px;
 
     font-size: 10px;
-
+    font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 1px;
 
-    letter-spacing: 1.1px;
-
-    color: rgba(255,255,255,0.42);
-
-    font-weight: 900;
+    color: rgba(255,190,130,0.7);
 }
 
-
-.input {
-
+.form-group input,
+.form-group select {
     width: 100%;
 
-    padding: 13px 14px;
+    padding: 12px 13px;
 
     border-radius: 12px;
 
     border: 1px solid rgba(255,255,255,0.08);
 
-    background:
-        rgba(255,255,255,0.055);
-
+    background: rgba(255,255,255,0.055);
     color: white;
 
     outline: none;
 
     font-family: inherit;
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
 }
 
-
-.input:focus {
-
-    border-color: rgba(255,120,0,0.55);
-
-    box-shadow:
-        0 0 20px rgba(255,100,0,0.08);
-}
-
-
-.category-select {
-
-    width: 100%;
-
-    padding: 13px 14px;
-
-    border-radius: 12px;
-
-    border: 1px solid rgba(255,255,255,0.08);
-
-    background: #24100a;
-
-    color: white;
-
-    outline: none;
-
-    font-family: inherit;
-
-    cursor: pointer;
-}
-
-
-.category-select option {
-
-    background: #24100a;
-
+.form-group select option {
+    background: #211006;
     color: white;
 }
-
 
 .modal-actions {
-
     display: flex;
-
+    justify-content: flex-end;
     gap: 10px;
-
-    margin-top: 21px;
+    margin-top: 20px;
 }
-
 
 .cancel-button {
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05);
+    color: white;
 
-    border: none;
-
-    padding: 13px 17px;
-
+    padding: 12px 16px;
     border-radius: 12px;
 
-    font-family: inherit;
-
-    font-weight: 900;
-
     cursor: pointer;
-
-    background:
-        rgba(255,255,255,0.07);
-
-    color: rgba(255,255,255,0.75);
-
-    transition:
-        background 0.2s,
-        transform 0.2s;
+    font-weight: 700;
 }
 
+/* =========================
+   LOGIN
+========================= */
 
-.cancel-button:hover {
-
-    background:
-        rgba(255,255,255,0.11);
-
-    transform: translateY(-1px);
+.login-box {
+    max-width: 400px;
 }
 
+.login-message {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 17px;
+}
 
 /* =========================
    CONTEXT MENU
 ========================= */
 
 .context-menu {
-
+    position: fixed;
     display: none;
 
-    position: fixed;
+    min-width: 160px;
 
-    z-index: 2000;
-
-    width: 185px;
-
-    padding: 7px;
+    background: rgba(30,11,4,0.97);
+    border: 1px solid rgba(255,125,0,0.16);
 
     border-radius: 14px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #281009,
-            #150704
-        );
-
-    border: 1px solid rgba(255,255,255,0.09);
+    overflow: hidden;
 
     box-shadow:
-        0 25px 60px rgba(0,0,0,0.65);
+        0 20px 60px rgba(0,0,0,0.5);
 
-    animation: contextIn 0.15s ease both;
+    z-index: 2000;
+
+    animation: contextIn 0.12s ease;
 }
 
-
 @keyframes contextIn {
-
     from {
         opacity: 0;
         transform: scale(0.96);
@@ -1194,154 +741,130 @@ tbody tr:hover td:first-child {
         opacity: 1;
         transform: scale(1);
     }
-
 }
 
-
 .context-menu button {
-
     display: block;
-
     width: 100%;
 
-    text-align: left;
-
-    border: none;
-
+    border: 0;
     background: transparent;
 
     color: white;
 
-    padding: 11px;
+    padding: 12px 15px;
 
-    border-radius: 9px;
-
+    text-align: left;
     cursor: pointer;
 
     font-family: inherit;
-
-    font-weight: 750;
+    font-size: 12px;
+    font-weight: 700;
 }
-
 
 .context-menu button:hover {
-
-    background:
-        rgba(255,255,255,0.07);
+    background: rgba(255,110,0,0.12);
 }
-
-
-.context-menu .delete-option {
-
-    color: #ff8b70;
-}
-
 
 /* =========================
    ADMIN TOAST
 ========================= */
 
 .admin-toast {
-
     position: fixed;
 
-    top: 25px;
+    right: 20px;
+    bottom: 20px;
 
-    right: 25px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px 17px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,126,0,0.96),
+            rgba(205,62,0,0.96)
+        );
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.35),
+        0 0 35px rgba(255,100,0,0.18);
 
     z-index: 3000;
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 15px 18px;
-
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2a1109,
-            #180805
-        );
-
-    border: 1px solid rgba(255,125,0,0.35);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.55),
-        0 0 30px rgba(255,100,0,0.12);
-
-    transform: translateX(130%);
-
-    opacity: 0;
-
-    transition:
-        transform 0.4s ease,
-        opacity 0.4s ease;
-
-    pointer-events: none;
+    animation: toastIn 0.4s ease;
 }
-
 
 .admin-toast.show {
-
-    transform: translateX(0);
-
-    opacity: 1;
+    display: flex;
 }
 
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
 .toast-icon {
+    width: 32px;
+    height: 32px;
 
-    width: 35px;
-    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border-radius: 50%;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6500,
-            #ff9d00
-        );
-
-    color: #1c0803;
+    background: rgba(255,255,255,0.15);
 
     font-weight: 900;
-
-    box-shadow:
-        0 0 20px rgba(255,100,0,0.20);
 }
-
 
 .toast-title {
-
-    font-size: 12px;
-
+    font-size: 11px;
     font-weight: 900;
-
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
-
 
 .toast-text {
-
-    margin-top: 3px;
-
-    font-size: 11px;
-
-    color: rgba(255,255,255,0.55);
+    font-size: 10px;
+    opacity: 0.75;
+    margin-top: 2px;
 }
 
+/* =========================
+   ADMIN INDICATOR
+========================= */
+
+.admin-indicator {
+    display: none;
+
+    padding: 8px 11px;
+
+    border-radius: 10px;
+
+    background: rgba(255,115,0,0.11);
+    color: #ff9c3b;
+
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.7px;
+}
+
+.admin-indicator.show {
+    display: inline-block;
+}
 
 /* =========================
    MOBILE
@@ -1350,126 +873,135 @@ tbody tr:hover td:first-child {
 @media (max-width: 700px) {
 
     .container {
-
-        width: 92%;
-
-        padding-top: 20px;
+        width: min(100% - 18px, 1400px);
+        padding-top: 15px;
     }
 
     .hero {
-
-        padding: 42px 26px;
-
+        padding: 38px 25px;
         border-radius: 24px;
     }
 
     .hero h1 {
-
-        letter-spacing: -3px;
-    }
-
-    .admin-toast {
-
-        left: 15px;
-
-        right: 15px;
-
-        top: 15px;
+        letter-spacing: -2px;
     }
 
     .era-banner {
-
-        font-size: 19px;
-
-        padding: 21px;
+        padding: 20px;
     }
 
-}
-
-
-/* =========================
-   REDUCED MOTION
-========================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-
-        animation-duration: 0.01ms !important;
-
-        animation-iteration-count: 1 !important;
-
-        transition-duration: 0.01ms !important;
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
     }
 
+    .search-box {
+        width: 100%;
+    }
+
+    .main-button {
+        width: 100%;
+    }
+
+    .category-bar {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+    }
+
+    .category-button {
+        white-space: nowrap;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-full {
+        grid-column: auto;
+    }
+
+    .admin-toast {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
 
-
     <!-- HERO -->
-
     <section class="hero">
-
         <div class="hero-content">
+
+            <div class="hero-small">
+                Unreleased Music Archive
+            </div>
 
             <h1>
                 JOPPEPOPE<br>
                 TRACKER
             </h1>
 
-            <p>
-                THE ARCHIVE OF THE UNRELEASED
+            <p class="hero-subtitle">
+                A personal archive of unreleased tracks, demos,
+                ideas and forgotten sessions.
             </p>
 
         </div>
-
     </section>
 
+    <!-- ERA -->
+    <section class="era-banner">
+        <div class="era-title">
+            BEFORE THE FIRST ALBUM
+        </div>
+    </section>
 
     <!-- CONTROLS -->
-
     <div class="controls">
 
-        <input
-            type="text"
-            id="searchInput"
-            class="search"
-            placeholder="Search tracks..."
-            oninput="renderTracks()"
-        >
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search song name..."
+                oninput="renderTracks()"
+            >
+        </div>
 
         <button
-            class="button"
+            class="main-button"
             onclick="openLogin()"
         >
-            ADMIN
+            🔐 ADMIN
         </button>
 
         <button
-            class="button"
+            class="main-button"
             id="addButton"
+            onclick="openAddModal()"
             style="display:none;"
-            onclick="openAddPanel()"
         >
-            + ADD TRACK
+            ＋ ADD TRACK
         </button>
+
+        <div
+            class="admin-indicator"
+            id="adminIndicator"
+        >
+            ADMIN MODE
+        </div>
 
     </div>
 
-
     <!-- CATEGORIES -->
-
-    <div class="category-buttons">
+    <div class="category-bar">
 
         <button
             id="allButton"
@@ -1497,27 +1029,7 @@ tbody tr:hover td:first-child {
 
     </div>
 
-
-    <!-- ADMIN HINT -->
-
-    <div class="admin-hint">
-
-        ADMIN MODE • Double-click a track to edit • Right-click to manage
-
-    </div>
-
-
-    <!-- ERA -->
-
-    <div class="era-banner">
-
-        BEFORE THE FIRST ALBUM
-
-    </div>
-
-
     <!-- TABLE -->
-
     <div
         class="table-wrapper"
         id="tableWrapper"
@@ -1547,38 +1059,40 @@ tbody tr:hover td:first-child {
 
             </thead>
 
-            <tbody id="trackTable"></tbody>
+            <tbody id="trackTable">
+
+            </tbody>
 
         </table>
 
     </div>
 
-
 </div>
 
 
-<!-- =========================
-     LOGIN MODAL
-========================= -->
+<!-- LOGIN MODAL -->
 
 <div
-    class="modal"
+    class="modal-backdrop"
     id="loginModal"
 >
 
-    <div class="modal-box">
+    <div class="modal login-box">
 
         <h2>Admin Login</h2>
 
-        <div class="input-group">
+        <p class="login-message">
+            Enter the admin password to manage the archive.
+        </p>
+
+        <div class="form-group">
 
             <label>Password</label>
 
             <input
+                id="loginPassword"
                 type="password"
-                id="passwordInput"
-                class="input"
-                placeholder="Enter password"
+                placeholder="Password"
                 onkeydown="if(event.key === 'Enter') login()"
             >
 
@@ -1587,17 +1101,17 @@ tbody tr:hover td:first-child {
         <div class="modal-actions">
 
             <button
-                class="button"
+                class="cancel-button"
+                onclick="closeLogin()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="main-button"
                 onclick="login()"
             >
-                LOGIN
-            </button>
-
-            <button
-                class="cancel-button"
-                onclick="closeModals()"
-            >
-                CANCEL
+                Enter
             </button>
 
         </div>
@@ -1607,138 +1121,130 @@ tbody tr:hover td:first-child {
 </div>
 
 
-<!-- =========================
-     ADD MODAL
-========================= -->
+<!-- ADD / EDIT MODAL -->
 
 <div
-    class="modal"
-    id="addModal"
+    class="modal-backdrop"
+    id="trackModal"
 >
 
-    <div class="modal-box">
+    <div class="modal">
 
-        <h2>Add Track</h2>
+        <h2 id="modalTitle">
+            Add Track
+        </h2>
 
+        <div class="form-grid">
 
-        <div class="input-group">
+            <div class="form-group form-full">
 
-            <label>Name</label>
+                <label>Song Name</label>
 
-            <input
-                id="newName"
-                class="input"
-                placeholder="Track name"
-            >
+                <input
+                    id="trackName"
+                    type="text"
+                    placeholder="Untitled"
+                >
 
-        </div>
+            </div>
 
+            <div class="form-group">
 
-        <div class="input-group">
+                <label>Year</label>
 
-            <label>Year</label>
+                <input
+                    id="trackYear"
+                    type="text"
+                    placeholder="2024"
+                >
 
-            <input
-                id="newYear"
-                class="input"
-                placeholder="2024"
-            >
+            </div>
 
-        </div>
+            <div class="form-group">
 
+                <label>Date Made</label>
 
-        <div class="input-group">
+                <input
+                    id="trackDate"
+                    type="date"
+                >
 
-            <label>Date Made</label>
+            </div>
 
-            <input
-                id="newDate"
-                class="input"
-                type="date"
-            >
+            <div class="form-group">
 
-        </div>
+                <label>Song Length</label>
 
+                <input
+                    id="trackLength"
+                    type="text"
+                    placeholder="3:42"
+                >
 
-        <div class="input-group">
+            </div>
 
-            <label>Type / Details</label>
+            <div class="form-group">
 
-            <input
-                id="newDetails"
-                class="input"
-                placeholder="Instrumental, Demo, Vocals..."
-            >
+                <label>Category</label>
 
-        </div>
+                <select id="trackCategory">
 
+                    <option value="none">
+                        No Category
+                    </option>
 
-        <div class="input-group">
+                    <option value="best">
+                        ⭐ Best Of
+                    </option>
 
-            <label>Song Length</label>
+                    <option value="worst">
+                        🗑️ Worst Of
+                    </option>
 
-            <input
-                id="newLength"
-                class="input"
-                placeholder="2:34"
-            >
+                </select>
 
-        </div>
+            </div>
 
+            <div class="form-group form-full">
 
-        <div class="input-group">
+                <label>Type / Details</label>
 
-            <label>Category</label>
+                <input
+                    id="trackDetails"
+                    type="text"
+                    placeholder="Instrumental, Demo, Vocals..."
+                >
 
-            <select
-                id="newCategory"
-                class="category-select"
-            >
+            </div>
 
-                <option value="none">
-                    No category
-                </option>
+            <div class="form-group form-full">
 
-                <option value="best">
-                    ⭐ BEST OF
-                </option>
+                <label>Link</label>
 
-                <option value="worst">
-                    🗑️ WORST OF
-                </option>
+                <input
+                    id="trackLink"
+                    type="url"
+                    placeholder="https://whyp.it/..."
+                >
 
-            </select>
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Whyp Link</label>
-
-            <input
-                id="newLink"
-                class="input"
-                placeholder="Paste https:// link here"
-            >
+            </div>
 
         </div>
-
 
         <div class="modal-actions">
 
             <button
-                class="button"
-                onclick="addTrack()"
+                class="cancel-button"
+                onclick="closeTrackModal()"
             >
-                ADD TRACK
+                Cancel
             </button>
 
             <button
-                class="cancel-button"
-                onclick="closeModals()"
+                class="main-button"
+                onclick="saveTrack()"
             >
-                CANCEL
+                Save Track
             </button>
 
         </div>
@@ -1748,146 +1254,7 @@ tbody tr:hover td:first-child {
 </div>
 
 
-<!-- =========================
-     EDIT MODAL
-========================= -->
-
-<div
-    class="modal"
-    id="editModal"
->
-
-    <div class="modal-box">
-
-        <h2>Edit Track</h2>
-
-
-        <div class="input-group">
-
-            <label>Name</label>
-
-            <input
-                id="editName"
-                class="input"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Year</label>
-
-            <input
-                id="editYear"
-                class="input"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Date Made</label>
-
-            <input
-                id="editDate"
-                class="input"
-                type="date"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Type / Details</label>
-
-            <input
-                id="editDetails"
-                class="input"
-                placeholder="Instrumental, Demo, Vocals..."
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Song Length</label>
-
-            <input
-                id="editLength"
-                class="input"
-            >
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Category</label>
-
-            <select
-                id="editCategory"
-                class="category-select"
-            >
-
-                <option value="none">
-                    No category
-                </option>
-
-                <option value="best">
-                    ⭐ BEST OF
-                </option>
-
-                <option value="worst">
-                    🗑️ WORST OF
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label>Whyp Link</label>
-
-            <input
-                id="editLink"
-                class="input"
-            >
-
-        </div>
-
-
-        <div class="modal-actions">
-
-            <button
-                class="button"
-                onclick="saveEdit()"
-            >
-                SAVE CHANGES
-            </button>
-
-            <button
-                class="cancel-button"
-                onclick="closeModals()"
-            >
-                CANCEL
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     CONTEXT MENU
-========================= -->
+<!-- CONTEXT MENU -->
 
 <div
     class="context-menu"
@@ -1898,19 +1265,14 @@ tbody tr:hover td:first-child {
         ✏️ Edit Track
     </button>
 
-    <button
-        class="delete-option"
-        onclick="contextDelete()"
-    >
-        🗑 Delete Track
+    <button onclick="contextDelete()">
+        🗑️ Delete Track
     </button>
 
 </div>
 
 
-<!-- =========================
-     ADMIN TOAST
-========================= -->
+<!-- ADMIN TOAST -->
 
 <div
     class="admin-toast"
@@ -1938,21 +1300,20 @@ tbody tr:hover td:first-child {
 
 <script>
 
-/* =========================
+/* =====================================================
    SETTINGS
-========================= */
+===================================================== */
 
 const ADMIN_PASSWORD = "start";
 
-const STORAGE_KEY =
-    "joppepope_tracker";
+const STORAGE_KEY = "joppepope_tracker";
 
 
-/* =========================
+/* =====================================================
    DEFAULT TRACKS
-========================= */
+===================================================== */
 
-let tracks = [
+const defaultTracks = [
 
     {
         name: "Untitled",
@@ -1987,98 +1348,62 @@ let tracks = [
 ];
 
 
-/* =========================
-   LOAD SAVED DATA
-========================= */
+/* =====================================================
+   LOAD DATA
+===================================================== */
 
-const savedTracks =
-    localStorage.getItem(
-        STORAGE_KEY
-    );
-
-
-if (savedTracks) {
-
-    try {
-
-        tracks =
-            JSON.parse(savedTracks);
-
-    } catch (error) {
-
-        console.log(
-            "Could not load saved tracks."
-        );
-
-    }
-
-}
+let tracks = JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+) || defaultTracks;
 
 
-/* =========================
-   MIGRATE OLD TRACKS
-========================= */
+/* =====================================================
+   MIGRATE OLD DATA
+===================================================== */
 
-tracks =
-    tracks.map(
-        function(track) {
+tracks = tracks.map(function(track) {
 
-            return {
+    return {
 
-                name:
-                    track.name ||
-                    "Untitled",
+        name: track.name || "Untitled",
 
-                year:
-                    track.year ||
-                    "—",
+        year: track.year || "—",
 
-                date:
-                    track.date ||
-                    "",
+        date: track.date || "",
 
-                details:
-                    track.details ||
-                    "",
+        details: track.details || "",
 
-                length:
-                    track.length ||
-                    "—",
+        length: track.length || "—",
 
-                link:
-                    track.link ||
-                    "",
+        link: track.link || "",
 
-                category:
-                    track.category ||
-                    "none"
+        category: track.category || "none"
 
-            };
+    };
 
-        }
-    );
+});
 
 
-/* =========================
+/* =====================================================
    STATE
-========================= */
+===================================================== */
 
-let adminMode = false;
+let isAdmin = false;
 
 let currentCategory = "all";
 
-let contextIndex = null;
-
 let editingIndex = null;
+
+let contextIndex = null;
 
 let renderTimer = null;
 
 
-/* =========================
+/* =====================================================
    SAVE
-========================= */
+===================================================== */
 
-function saveTracks() {
+function saveData() {
 
     localStorage.setItem(
         STORAGE_KEY,
@@ -2088,28 +1413,21 @@ function saveTracks() {
 }
 
 
-/* =========================
-   DATE
-========================= */
+/* =====================================================
+   DATE FORMAT
+===================================================== */
 
 function formatDate(date) {
 
     if (!date) {
-
         return "—";
-
     }
 
-    const parts =
-        date.split("-");
-
+    const parts = date.split("-");
 
     if (parts.length !== 3) {
-
         return date;
-
     }
-
 
     return (
         parts[2] +
@@ -2122,83 +1440,76 @@ function formatDate(date) {
 }
 
 
-/* =========================
-   CATEGORY ICON
-========================= */
+/* =====================================================
+   CATEGORY
+===================================================== */
 
-function categoryIcon(category) {
+function setCategory(category) {
 
-    if (
-        category === "best"
-    ) {
+    currentCategory = category;
 
-        return "⭐ ";
+    document
+        .getElementById("allButton")
+        .classList.toggle(
+            "active",
+            category === "all"
+        );
 
-    }
+    document
+        .getElementById("bestButton")
+        .classList.toggle(
+            "active",
+            category === "best"
+        );
 
+    document
+        .getElementById("worstButton")
+        .classList.toggle(
+            "active",
+            category === "worst"
+        );
 
-    if (
-        category === "worst"
-    ) {
-
-        return "🗑️ ";
-
-    }
-
-
-    return "";
+    renderTracks(true);
 
 }
 
 
-/* =========================
-   RENDER
-========================= */
+/* =====================================================
+   SEARCH + RENDER
+===================================================== */
 
-function renderTracks(
-    animated = false
-) {
+function renderTracks(animated = false) {
 
     const wrapper =
-        document.getElementById(
-            "tableWrapper"
-        );
+        document.getElementById("tableWrapper");
 
 
-    if (
-        animated
-    ) {
+    if (animated) {
 
         wrapper.classList.add(
             "category-changing"
         );
 
+        clearTimeout(renderTimer);
 
-        clearTimeout(
-            renderTimer
+        renderTimer = setTimeout(
+            function() {
+
+                actuallyRender();
+
+                requestAnimationFrame(
+                    function() {
+
+                        wrapper.classList.remove(
+                            "category-changing"
+                        );
+
+                    }
+                );
+
+            },
+            130
         );
-
-
-        renderTimer =
-            setTimeout(
-                function() {
-
-                    actuallyRender();
-
-                    requestAnimationFrame(
-                        function() {
-
-                            wrapper.classList.remove(
-                                "category-changing"
-                            );
-
-                        }
-                    );
-
-                },
-                130
-            );
-
 
         return;
 
@@ -2210,101 +1521,131 @@ function renderTracks(
 }
 
 
-/* =========================
+/* =====================================================
    ACTUAL RENDER
-========================= */
+===================================================== */
 
 function actuallyRender() {
 
-    const table =
-        document.getElementById(
-            "trackTable"
-        );
+    const tbody =
+        document.getElementById("trackTable");
+
+    const query =
+        document
+            .getElementById("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
 
 
-    const search =
-        document.getElementById(
-            "searchInput"
-        ).value
-        .toLowerCase()
-        .trim();
+    tbody.innerHTML = "";
 
 
-    table.innerHTML = "";
-
-
-    let visibleNumber = 0;
+    let visibleTracks = [];
 
 
     tracks.forEach(
         function(track, index) {
 
+            /*
+                SEARCH ONLY BY SONG NAME.
+                Year, date, details and length
+                are intentionally ignored.
+            */
 
-            /* CATEGORY FILTER */
-
-            if (
-                currentCategory !==
-                "all"
-            ) {
-
-                if (
-                    track.category !==
-                    currentCategory
-                ) {
-
-                    return;
-
-                }
-
-            }
+            const matchesSearch =
+                track.name
+                    .toLowerCase()
+                    .includes(query);
 
 
-            /* SEARCH */
-
-            const searchableText = (
-
-                track.name +
-                " " +
-                track.year +
-                " " +
-                track.date +
-                " " +
-                track.details +
-                " " +
-                track.length
-
-            ).toLowerCase();
+            const matchesCategory =
+                currentCategory === "all" ||
+                track.category === currentCategory;
 
 
             if (
-                search &&
-                !searchableText.includes(
-                    search
-                )
+                matchesSearch &&
+                matchesCategory
             ) {
 
-                return;
+                visibleTracks.push({
+                    track: track,
+                    index: index
+                });
 
             }
 
+        }
+    );
 
-            visibleNumber++;
+
+    if (visibleTracks.length === 0) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <div class="empty-title">
+                            No tracks found
+                        </div>
+
+                        <div>
+                            Try another song name.
+                        </div>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
 
 
-            /* ROW */
+    visibleTracks.forEach(
+        function(item, displayIndex) {
+
+            const track = item.track;
+
+            const realIndex = item.index;
+
+
+            let categoryIcon = "";
+
+            if (track.category === "best") {
+
+                categoryIcon = "⭐";
+
+            }
+
+            if (track.category === "worst") {
+
+                categoryIcon = "🗑️";
+
+            }
+
 
             const row =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
 
             row.ondblclick =
                 function() {
 
-                    if (adminMode) {
+                    if (isAdmin) {
 
-                        openEditPanel(index);
+                        openEditModal(
+                            realIndex
+                        );
 
                     }
 
@@ -2314,200 +1655,87 @@ function actuallyRender() {
             row.oncontextmenu =
                 function(event) {
 
-                    if (!adminMode) {
-
+                    if (!isAdmin) {
                         return;
-
                     }
-
 
                     event.preventDefault();
 
-
-                    contextIndex =
-                        index;
-
-
                     showContextMenu(
-                        event.clientX,
-                        event.clientY
+                        event,
+                        realIndex
                     );
 
                 };
 
 
-            /* NUMBER */
-
-            const numberCell =
-                document.createElement(
-                    "td"
-                );
-
-            numberCell.className =
-                "number";
-
-            numberCell.textContent =
-                visibleNumber;
-
-
-            /* NAME */
-
-            const nameCell =
-                document.createElement(
-                    "td"
-                );
-
-            nameCell.className =
-                "track-name";
-
-            nameCell.textContent =
-                categoryIcon(
-                    track.category
-                ) +
-                track.name;
-
-
-            /* YEAR */
-
-            const yearCell =
-                document.createElement(
-                    "td"
-                );
-
-            yearCell.className =
-                "year";
-
-            yearCell.textContent =
-                track.year;
-
-
-            /* DATE */
-
-            const dateCell =
-                document.createElement(
-                    "td"
-                );
-
-            dateCell.className =
-                "date-made";
-
-            dateCell.textContent =
-                formatDate(
-                    track.date
-                );
-
-
-            /* DETAILS */
-
-            const detailsCell =
-                document.createElement(
-                    "td"
-                );
-
-            detailsCell.className =
-                "track-details";
-
-            detailsCell.textContent =
-                track.details ||
-                "—";
-
-
-            /* LENGTH */
-
-            const lengthCell =
-                document.createElement(
-                    "td"
-                );
-
-            lengthCell.className =
-                "length";
-
-            lengthCell.textContent =
-                track.length;
-
-
-            /* LINK */
-
-            const linkCell =
-                document.createElement(
-                    "td"
-                );
+            let linkHTML = `
+                <span class="muted">
+                    —
+                </span>
+            `;
 
 
             if (track.link) {
 
-                const playButton =
-                    document.createElement(
-                        "button"
-                    );
+                linkHTML = `
 
+                    <button
+                        class="play-button"
+                        onclick="openTrackLink(${realIndex})"
+                    >
+                        ▶ Listen
+                    </button>
 
-                playButton.className =
-                    "play-button";
-
-
-                playButton.textContent =
-                    "▶ Listen";
-
-
-                playButton.onclick =
-                    function() {
-
-                        window.open(
-                            track.link,
-                            "_blank"
-                        );
-
-                    };
-
-
-                linkCell.appendChild(
-                    playButton
-                );
-
-            } else {
-
-                linkCell.textContent =
-                    "—";
-
-                linkCell.style.color =
-                    "rgba(255,255,255,0.3)";
+                `;
 
             }
 
 
-            row.appendChild(
-                numberCell
-            );
+            row.innerHTML = `
 
-            row.appendChild(
-                nameCell
-            );
+                <td class="track-number">
+                    ${displayIndex + 1}
+                </td>
 
-            row.appendChild(
-                yearCell
-            );
+                <td class="track-name">
 
-            row.appendChild(
-                dateCell
-            );
+                    <span class="category-icon">
+                        ${categoryIcon}
+                    </span>
 
-            row.appendChild(
-                detailsCell
-            );
+                    ${escapeHTML(track.name)}
 
-            row.appendChild(
-                lengthCell
-            );
+                </td>
 
-            row.appendChild(
-                linkCell
-            );
+                <td>
+                    ${escapeHTML(track.year)}
+                </td>
+
+                <td>
+                    ${formatDate(track.date)}
+                </td>
+
+                <td>
+                    ${
+                        track.details
+                        ? escapeHTML(track.details)
+                        : '<span class="muted">—</span>'
+                    }
+                </td>
+
+                <td>
+                    ${escapeHTML(track.length)}
+                </td>
+
+                <td>
+                    ${linkHTML}
+                </td>
+
+            `;
 
 
-            table.appendChild(
-                row
-            );
+            tbody.appendChild(row);
 
         }
     );
@@ -2515,550 +1743,427 @@ function actuallyRender() {
 }
 
 
-/* =========================
-   CATEGORY SWITCH
-========================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-function setCategory(
-    category
-) {
+function escapeHTML(value) {
 
-    currentCategory =
-        category;
-
-
-    document
-        .getElementById(
-            "allButton"
-        )
-        .classList.remove(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "bestButton"
-        )
-        .classList.remove(
-            "active"
-        );
-
-
-    document
-        .getElementById(
-            "worstButton"
-        )
-        .classList.remove(
-            "active"
-        );
-
-
-    if (
-        category ===
-        "all"
-    ) {
-
-        document
-            .getElementById(
-                "allButton"
-            )
-            .classList.add(
-                "active"
-            );
-
-    }
-
-
-    if (
-        category ===
-        "best"
-    ) {
-
-        document
-            .getElementById(
-                "bestButton"
-            )
-            .classList.add(
-                "active"
-            );
-
-    }
-
-
-    if (
-        category ===
-        "worst"
-    ) {
-
-        document
-            .getElementById(
-                "worstButton"
-            )
-            .classList.add(
-                "active"
-            );
-
-    }
-
-
-    renderTracks(true);
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* =========================
+/* =====================================================
    LOGIN
-========================= */
+===================================================== */
 
 function openLogin() {
 
-    if (adminMode) {
-
-        adminMode = false;
-
-
-        document.body.classList.remove(
-            "admin-active"
-        );
-
-
-        document.getElementById(
-            "addButton"
-        ).style.display =
-            "none";
-
-
-        renderTracks();
-
-
-        return;
-
-    }
-
-
     document
-        .getElementById(
-            "loginModal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("loginModal")
+        .classList.add("show");
 
+    setTimeout(
+        function() {
 
-    document
-        .getElementById(
-            "passwordInput"
-        )
-        .focus();
+            document
+                .getElementById("loginPassword")
+                .focus();
+
+        },
+        100
+    );
 
 }
 
 
-/* =========================
-   LOGIN CHECK
-========================= */
+function closeLogin() {
+
+    document
+        .getElementById("loginModal")
+        .classList.remove("show");
+
+    document
+        .getElementById("loginPassword")
+        .value = "";
+
+}
+
 
 function login() {
 
     const password =
-        document.getElementById(
-            "passwordInput"
-        ).value;
+        document
+            .getElementById("loginPassword")
+            .value;
 
 
-    if (
-        password ===
-        ADMIN_PASSWORD
-    ) {
+    if (password === ADMIN_PASSWORD) {
 
-        adminMode = true;
+        isAdmin = true;
 
+        closeLogin();
 
-        document.body.classList.add(
-            "admin-active"
-        );
+        document
+            .getElementById("addButton")
+            .style.display = "block";
 
-
-        document.getElementById(
-            "addButton"
-        ).style.display =
-            "block";
-
-
-        closeModals();
-
+        document
+            .getElementById("adminIndicator")
+            .classList.add("show");
 
         showAdminToast();
-
 
         renderTracks();
 
     } else {
 
-        document.getElementById(
-            "passwordInput"
-        ).value = "";
-
-
-        alert(
-            "Incorrect password."
-        );
+        alert("Wrong password.");
 
     }
 
 }
 
 
-/* =========================
+/* =====================================================
    ADMIN TOAST
-========================= */
+===================================================== */
 
 function showAdminToast() {
 
     const toast =
-        document.getElementById(
-            "adminToast"
-        );
+        document.getElementById("adminToast");
 
-
-    toast.classList.add(
-        "show"
-    );
-
+    toast.classList.add("show");
 
     setTimeout(
         function() {
 
-            toast.classList.remove(
-                "show"
-            );
+            toast.classList.remove("show");
 
         },
-        4000
+        3500
     );
 
 }
 
 
-/* =========================
-   ADD PANEL
-========================= */
-
-function openAddPanel() {
-
-    if (!adminMode) {
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "newName"
-    ).value = "";
-
-
-    document.getElementById(
-        "newYear"
-    ).value = "";
-
-
-    document.getElementById(
-        "newDate"
-    ).value = "";
-
-
-    document.getElementById(
-        "newDetails"
-    ).value = "";
-
-
-    document.getElementById(
-        "newLength"
-    ).value = "";
-
-
-    document.getElementById(
-        "newCategory"
-    ).value = "none";
-
-
-    document.getElementById(
-        "newLink"
-    ).value = "";
-
-
-    document
-        .getElementById(
-            "addModal"
-        )
-        .classList.add(
-            "show"
-        );
-
-}
-
-
-/* =========================
+/* =====================================================
    ADD TRACK
-========================= */
+===================================================== */
 
-function addTrack() {
+function openAddModal() {
 
-    const name =
-        document.getElementById(
-            "newName"
-        ).value.trim();
-
-
-    const year =
-        document.getElementById(
-            "newYear"
-        ).value.trim();
-
-
-    const date =
-        document.getElementById(
-            "newDate"
-        ).value;
-
-
-    const details =
-        document.getElementById(
-            "newDetails"
-        ).value.trim();
-
-
-    const length =
-        document.getElementById(
-            "newLength"
-        ).value.trim();
-
-
-    const category =
-        document.getElementById(
-            "newCategory"
-        ).value;
-
-
-    const link =
-        document.getElementById(
-            "newLink"
-        ).value.trim();
-
-
-    if (!name) {
-
-        alert(
-            "Please enter a track name."
-        );
-
+    if (!isAdmin) {
         return;
-
     }
 
+    editingIndex = null;
 
-    tracks.push({
-
-        name:
-            name,
-
-        year:
-            year ||
-            "—",
-
-        date:
-            date,
-
-        details:
-            details,
-
-        length:
-            length ||
-            "—",
-
-        link:
-            link,
-
-        category:
-            category
-
-    });
-
-
-    saveTracks();
-
-
-    closeModals();
-
-
-    renderTracks();
-
-}
-
-
-/* =========================
-   EDIT PANEL
-========================= */
-
-function openEditPanel(
-    index
-) {
-
-    if (!adminMode) {
-
-        return;
-
-    }
-
-
-    editingIndex =
-        index;
-
-
-    const track =
-        tracks[index];
-
-
-    document.getElementById(
-        "editName"
-    ).value =
-        track.name;
-
-
-    document.getElementById(
-        "editYear"
-    ).value =
-        track.year;
-
-
-    document.getElementById(
-        "editDate"
-    ).value =
-        track.date || "";
-
-
-    document.getElementById(
-        "editDetails"
-    ).value =
-        track.details || "";
-
-
-    document.getElementById(
-        "editLength"
-    ).value =
-        track.length;
-
-
-    document.getElementById(
-        "editCategory"
-    ).value =
-        track.category;
-
-
-    document.getElementById(
-        "editLink"
-    ).value =
-        track.link;
+    document
+        .getElementById("modalTitle")
+        .textContent = "Add Track";
 
 
     document
-        .getElementById(
-            "editModal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("trackName")
+        .value = "";
+
+    document
+        .getElementById("trackYear")
+        .value = "";
+
+    document
+        .getElementById("trackDate")
+        .value = "";
+
+    document
+        .getElementById("trackLength")
+        .value = "";
+
+    document
+        .getElementById("trackDetails")
+        .value = "";
+
+    document
+        .getElementById("trackLink")
+        .value = "";
+
+    document
+        .getElementById("trackCategory")
+        .value = "none";
+
+
+    document
+        .getElementById("trackModal")
+        .classList.add("show");
 
 }
 
 
-/* =========================
-   SAVE EDIT
-========================= */
+/* =====================================================
+   EDIT TRACK
+===================================================== */
 
-function saveEdit() {
+function openEditModal(index) {
 
-    if (
-        editingIndex ===
-        null
-    ) {
-
+    if (!isAdmin) {
         return;
+    }
 
+    editingIndex = index;
+
+    const track = tracks[index];
+
+
+    document
+        .getElementById("modalTitle")
+        .textContent = "Edit Track";
+
+
+    document
+        .getElementById("trackName")
+        .value = track.name;
+
+    document
+        .getElementById("trackYear")
+        .value = track.year;
+
+    document
+        .getElementById("trackDate")
+        .value = track.date;
+
+    document
+        .getElementById("trackLength")
+        .value = track.length;
+
+    document
+        .getElementById("trackDetails")
+        .value = track.details;
+
+    document
+        .getElementById("trackLink")
+        .value = track.link;
+
+    document
+        .getElementById("trackCategory")
+        .value = track.category;
+
+
+    document
+        .getElementById("trackModal")
+        .classList.add("show");
+
+}
+
+
+/* =====================================================
+   CLOSE TRACK MODAL
+===================================================== */
+
+function closeTrackModal() {
+
+    document
+        .getElementById("trackModal")
+        .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   SAVE TRACK
+===================================================== */
+
+function saveTrack() {
+
+    if (!isAdmin) {
+        return;
     }
 
 
-    tracks[editingIndex] = {
+    const track = {
 
         name:
-            document.getElementById(
-                "editName"
-            ).value.trim(),
+            document
+                .getElementById("trackName")
+                .value
+                .trim() || "Untitled",
 
         year:
-            document.getElementById(
-                "editYear"
-            ).value.trim() ||
-            "—",
+            document
+                .getElementById("trackYear")
+                .value
+                .trim() || "—",
 
         date:
-            document.getElementById(
-                "editDate"
-            ).value,
+            document
+                .getElementById("trackDate")
+                .value,
 
         details:
-            document.getElementById(
-                "editDetails"
-            ).value.trim(),
+            document
+                .getElementById("trackDetails")
+                .value
+                .trim(),
 
         length:
-            document.getElementById(
-                "editLength"
-            ).value.trim() ||
-            "—",
-
-        category:
-            document.getElementById(
-                "editCategory"
-            ).value,
+            document
+                .getElementById("trackLength")
+                .value
+                .trim() || "—",
 
         link:
-            document.getElementById(
-                "editLink"
-            ).value.trim()
+            document
+                .getElementById("trackLink")
+                .value
+                .trim(),
+
+        category:
+            document
+                .getElementById("trackCategory")
+                .value
 
     };
 
 
-    saveTracks();
+    if (editingIndex === null) {
+
+        tracks.push(track);
+
+    } else {
+
+        tracks[editingIndex] = track;
+
+    }
 
 
-    editingIndex =
-        null;
+    saveData();
 
-
-    closeModals();
-
+    closeTrackModal();
 
     renderTracks();
 
 }
 
 
-/* =========================
-   DELETE
-========================= */
+/* =====================================================
+   OPEN LINK
+===================================================== */
 
-function deleteTrack(
-    index
-) {
+function openTrackLink(index) {
 
-    if (!adminMode) {
+    const link = tracks[index].link;
 
+    if (!link) {
         return;
+    }
 
+    if (
+        link.startsWith("https://") ||
+        link.startsWith("http://")
+    ) {
+
+        window.open(
+            link,
+            "_blank"
+        );
+
+    } else {
+
+        alert(
+            "Please use a full https:// link."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CONTEXT MENU
+===================================================== */
+
+function showContextMenu(event, index) {
+
+    contextIndex = index;
+
+    const menu =
+        document.getElementById("contextMenu");
+
+
+    menu.style.display = "block";
+
+    menu.style.left =
+        event.clientX + "px";
+
+    menu.style.top =
+        event.clientY + "px";
+
+}
+
+
+function hideContextMenu() {
+
+    document
+        .getElementById("contextMenu")
+        .style.display = "none";
+
+}
+
+
+function contextEdit() {
+
+    if (
+        contextIndex === null ||
+        !isAdmin
+    ) {
+        return;
+    }
+
+    const index = contextIndex;
+
+    hideContextMenu();
+
+    openEditModal(index);
+
+}
+
+
+function contextDelete() {
+
+    if (
+        contextIndex === null ||
+        !isAdmin
+    ) {
+        return;
+    }
+
+
+    const index = contextIndex;
+
+    const trackName =
+        tracks[index].name;
+
+
+    hideContextMenu();
+
+
+    const confirmed =
+        confirm(
+            'Delete "' +
+            trackName +
+            '"?'
+        );
+
+
+    if (!confirmed) {
+        return;
     }
 
 
@@ -3068,168 +2173,79 @@ function deleteTrack(
     );
 
 
-    saveTracks();
-
+    saveData();
 
     renderTracks();
 
 }
 
 
-/* =========================
-   CONTEXT MENU
-========================= */
-
-function showContextMenu(
-    x,
-    y
-) {
-
-    const menu =
-        document.getElementById(
-            "contextMenu"
-        );
-
-
-    menu.style.display =
-        "block";
-
-
-    menu.style.left =
-        x + "px";
-
-
-    menu.style.top =
-        y + "px";
-
-}
-
-
-function contextEdit() {
-
-    if (
-        contextIndex ===
-        null
-    ) {
-
-        return;
-
-    }
-
-
-    const index =
-        contextIndex;
-
-
-    hideContextMenu();
-
-
-    openEditPanel(
-        index
-    );
-
-}
-
-
-function contextDelete() {
-
-    if (
-        contextIndex ===
-        null
-    ) {
-
-        return;
-
-    }
-
-
-    const index =
-        contextIndex;
-
-
-    hideContextMenu();
-
-
-    deleteTrack(
-        index
-    );
-
-}
-
-
-function hideContextMenu() {
-
-    document.getElementById(
-        "contextMenu"
-    ).style.display =
-        "none";
-
-}
-
-
-/* =========================
-   CLOSE MODALS
-========================= */
-
-function closeModals() {
-
-    document
-        .getElementById(
-            "loginModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-
-    document
-        .getElementById(
-            "addModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-
-    document
-        .getElementById(
-            "editModal"
-        )
-        .classList.remove(
-            "show"
-        );
-
-}
-
-
-/* =========================
-   CLICK OUTSIDE
-========================= */
+/* =====================================================
+   CLOSE CONTEXT MENU
+===================================================== */
 
 document.addEventListener(
     "click",
     function(event) {
 
+        const menu =
+            document.getElementById("contextMenu");
+
         if (
-            event.target.classList.contains(
-                "modal"
-            )
+            !menu.contains(event.target)
         ) {
 
-            closeModals();
+            hideContextMenu();
 
         }
-
-
-        hideContextMenu();
 
     }
 );
 
 
-/* =========================
+/* =====================================================
+   CLOSE MODALS BY CLICKING OUTSIDE
+===================================================== */
+
+document
+    .getElementById("loginModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeLogin();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("trackModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeTrackModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
    INITIAL RENDER
-========================= */
+===================================================== */
 
 renderTracks();
 
