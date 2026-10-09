@@ -1,1175 +1,855 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100b10">
 <title>JOPPEPOPE TRACKER</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--orange:#ff7600;--orange-light:#ff9d32;--orange-dark:#d94e00;--brown:#160903;--brown-2:#241006;--cream:#fff5e9}
-html{scroll-behavior:smooth}
-body{min-height:100vh;font-family:"Inter",Arial,sans-serif;color:var(--cream);background:radial-gradient(circle at 15% 15%,rgba(255,115,0,.25),transparent 28%),radial-gradient(circle at 85% 20%,rgba(255,65,0,.18),transparent 30%),radial-gradient(circle at 50% 90%,rgba(255,160,0,.15),transparent 35%),linear-gradient(135deg,#0d0502,#241006 45%,#100502);background-size:180% 180%;animation:backgroundMove 20s ease-in-out infinite alternate;overflow-x:hidden;position:relative}
-@keyframes backgroundMove{0%{background-position:0 0}35%{background-position:80% 25%}70%{background-position:25% 80%}100%{background-position:100% 100%}}
-body:before,body:after{content:"";position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(100px);opacity:.25}
-body:before{background:#ff7100;top:-180px;left:-180px;animation:glowOne 15s ease-in-out infinite alternate}
-body:after{background:#ff3c00;right:-200px;bottom:-180px;animation:glowTwo 18s ease-in-out infinite alternate}
-@keyframes glowOne{0%{transform:translate(0,0) scale(.8)}50%{transform:translate(230px,160px) scale(1.3)}100%{transform:translate(60px,420px) scale(1)}}
-@keyframes glowTwo{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-220px,-160px) scale(1.35)}100%{transform:translate(-80px,-320px) scale(.85)}}
-.container{width:min(1400px,calc(100% - 32px));margin:0 auto;padding:35px 0 60px}
-.hero{position:relative;overflow:hidden;border-radius:32px;padding:55px 45px;margin-bottom:25px;background:linear-gradient(135deg,rgba(255,137,25,.98),rgba(220,73,0,.98));box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 60px rgba(255,100,0,.18);animation:heroAppear .9s ease-out}
-@keyframes heroAppear{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.hero:before{content:"";position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.1);right:-120px;top:-180px;animation:heroOrb 8s ease-in-out infinite alternate}
-.hero:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.08);left:45%;bottom:-180px}
-@keyframes heroOrb{from{transform:translate(0,0) scale(1)}to{transform:translate(-80px,80px) scale(1.25)}}
-.hero-content{position:relative;z-index:2}.hero-small{font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;opacity:.8;margin-bottom:12px}
-.hero h1{font-size:clamp(38px,7vw,88px);line-height:.95;font-weight:900;letter-spacing:-4px;color:#fff9f0;text-shadow:0 5px 20px rgba(80,25,0,.25)}
-.hero-subtitle{margin-top:20px;max-width:650px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.82)}
-.era-section{margin-bottom:28px;animation:sectionIn .7s ease-out}
-@keyframes sectionIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-.era-banner{position:relative;overflow:hidden;border-radius:22px;padding:25px 30px;margin-bottom:18px;background:linear-gradient(120deg,rgba(255,120,0,.95),rgba(255,77,0,.95));box-shadow:0 18px 45px rgba(0,0,0,.25),0 0 30px rgba(255,100,0,.12)}
-.era-banner:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-80px;background:rgba(255,255,255,.08);animation:bannerOrb 7s ease-in-out infinite alternate}
-@keyframes bannerOrb{to{transform:translate(-80px,30px) scale(1.3)}}
-.era-title{position:relative;z-index:2;font-size:clamp(22px,4vw,38px);font-weight:900;letter-spacing:-1px}
-.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
-.search-box{flex:1;min-width:230px}.search-box input{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;background:rgba(255,255,255,.055);backdrop-filter:blur(20px);color:white;padding:15px 18px;border-radius:16px;font-size:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 30px rgba(0,0,0,.18);transition:.25s ease}
-.search-box input::placeholder{color:rgba(255,255,255,.45)}.search-box input:focus{border-color:rgba(255,130,0,.65);box-shadow:0 0 0 4px rgba(255,115,0,.08),0 10px 35px rgba(0,0,0,.22)}
-button{font-family:inherit}.main-button,.category-button,.preset-select{border:0;cursor:pointer;color:white;padding:14px 18px;border-radius:15px;font-weight:800;font-size:12px;letter-spacing:.3px;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
-.main-button{background:linear-gradient(135deg,#ff8a16,#e24e00);box-shadow:0 10px 25px rgba(255,100,0,.18),inset 0 1px 0 rgba(255,255,255,.15)}.main-button:hover{transform:translateY(-3px);box-shadow:0 16px 35px rgba(255,100,0,.28),0 0 25px rgba(255,100,0,.12)}
-.category-bar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px}.category-button{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(15px)}.category-button:hover{transform:translateY(-3px) scale(1.02);background:rgba(255,125,0,.13);box-shadow:0 10px 30px rgba(255,100,0,.18)}.category-button.active{background:linear-gradient(135deg,#ff8a16,#df4e00);border-color:transparent;box-shadow:0 10px 30px rgba(255,100,0,.22)}
-.sort-bar{display:flex;align-items:center;gap:10px;margin:0 0 18px;flex-wrap:wrap}.sort-label{font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,190,130,.7)}
-.preset-select{appearance:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(18px);outline:none}.preset-select option{background:#211006;color:white}
-.table-wrapper{overflow-x:auto;border-radius:24px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(22px);box-shadow:0 25px 70px rgba(0,0,0,.35);transition:opacity .25s ease,transform .25s ease,box-shadow .35s ease}.table-wrapper:hover{box-shadow:0 30px 80px rgba(0,0,0,.4),0 0 40px rgba(255,110,0,.06)}.table-wrapper.category-changing{opacity:0;transform:translateY(8px) scale(.995)}
-table{width:100%;border-collapse:collapse;min-width:950px}thead{background:rgba(255,112,0,.12)}th{padding:18px 15px;text-align:left;font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,190,130,.85);border-bottom:1px solid rgba(255,255,255,.07)}td{padding:17px 15px;border-bottom:1px solid rgba(255,255,255,.045);font-size:13px;color:rgba(255,245,235,.86);transition:background .2s ease}tbody tr{transition:transform .2s ease,background .2s ease}tbody tr:hover{background:rgba(255,115,0,.065)}tbody tr:last-child td{border-bottom:none}.track-number{color:rgba(255,160,80,.6);font-weight:800}.track-name{color:white;font-weight:800}.category-icon{display:inline-block;margin-right:7px}.muted{color:rgba(255,255,255,.42)}.play-button{border:0;cursor:pointer;padding:9px 13px;border-radius:11px;background:rgba(255,115,0,.12);color:#ff9c3b;font-size:11px;font-weight:800;transition:.2s ease}.play-button:hover{background:rgba(255,115,0,.22);transform:translateY(-2px)}
-.empty{text-align:center;padding:55px 20px;color:rgba(255,255,255,.4)}.empty-title{font-size:18px;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:7px}
-.coming-soon{position:relative;overflow:hidden;margin-top:42px;border-radius:30px;padding:48px 35px;text-align:center;background:linear-gradient(135deg,rgba(35,117,255,.86),rgba(100,54,255,.78) 48%,rgba(0,196,255,.72));border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 90px rgba(0,30,120,.3),inset 0 1px 0 rgba(255,255,255,.3);backdrop-filter:blur(24px);animation:blueFloat 8s ease-in-out infinite alternate}
-.coming-soon:before,.coming-soon:after{content:"";position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.13);filter:blur(3px)}.coming-soon:before{width:330px;height:330px;left:-100px;top:-190px;animation:blueOrbOne 8s ease-in-out infinite alternate}.coming-soon:after{width:260px;height:260px;right:-80px;bottom:-170px;animation:blueOrbTwo 9s ease-in-out infinite alternate}
-@keyframes blueFloat{from{transform:translateY(0)}to{transform:translateY(-6px)}}@keyframes blueOrbOne{to{transform:translate(170px,120px) scale(1.25)}}@keyframes blueOrbTwo{to{transform:translate(-130px,-100px) scale(1.3)}}
-.coming-content{position:relative;z-index:2}.coming-label{font-size:11px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:12px}.coming-title{font-size:clamp(30px,6vw,62px);font-weight:900;letter-spacing:-2px;text-shadow:0 8px 35px rgba(0,20,100,.3)}.coming-subtitle{margin-top:12px;color:rgba(255,255,255,.75);font-size:14px}
-.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,2,1,.72);backdrop-filter:blur(14px);z-index:1000}.modal-backdrop.show{display:flex;animation:fadeIn .2s ease}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{width:min(560px,100%);padding:28px;border-radius:25px;background:linear-gradient(145deg,rgba(44,18,7,.98),rgba(20,8,3,.98));border:1px solid rgba(255,135,0,.18);box-shadow:0 35px 100px rgba(0,0,0,.65),0 0 50px rgba(255,90,0,.08);animation:modalIn .25s ease}@keyframes modalIn{from{opacity:0;transform:translateY(15px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}.modal h2{margin-bottom:20px;font-size:23px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.form-full{grid-column:1/-1}.form-group label{display:block;margin-bottom:7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,190,130,.7)}.form-group input,.form-group select{width:100%;padding:12px 13px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.055);color:white;outline:none;font-family:inherit}.form-group select option{background:#211006;color:white}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.cancel-button{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:white;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:700}.login-box{max-width:400px}.login-message{color:rgba(255,255,255,.5);font-size:13px;line-height:1.5;margin-bottom:17px}
-.context-menu{position:fixed;display:none;min-width:160px;background:rgba(30,11,4,.97);border:1px solid rgba(255,125,0,.16);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);z-index:2000;animation:contextIn .12s ease}@keyframes contextIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}.context-menu button{display:block;width:100%;border:0;background:transparent;color:white;padding:12px 15px;text-align:left;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700}.context-menu button:hover{background:rgba(255,110,0,.12)}
-.admin-toast{position:fixed;right:20px;bottom:20px;display:none;align-items:center;gap:12px;padding:14px 17px;border-radius:16px;background:linear-gradient(135deg,rgba(255,126,0,.96),rgba(205,62,0,.96));box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 35px rgba(255,100,0,.18);z-index:3000;animation:toastIn .4s ease}.admin-toast.show{display:flex}@keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}.toast-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.15);font-weight:900}.toast-title{font-size:11px;font-weight:900;letter-spacing:.8px}.toast-text{font-size:10px;opacity:.75;margin-top:2px}.admin-indicator{display:none;padding:8px 11px;border-radius:10px;background:rgba(255,115,0,.11);color:#ff9c3b;font-size:10px;font-weight:900;letter-spacing:.7px}.admin-indicator.show{display:inline-block}
+:root {
+  color-scheme: dark;
+  --bg:#100b10; --panel:rgba(35,23,27,.78);
+  --solid:#24171c; --text:#fff5f0; --muted:#c0a8a7;
+  --accent:#ff792f; --accent2:#ffd08a;
+  --border:rgba(255,145,83,.25); --glow:rgba(255,111,40,.22);
+  --shadow:rgba(0,0,0,.35);
+  --blue:#63b7ff; --cyan:#86f0ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:25px}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;color:var(--text);
+  background:radial-gradient(ellipse at 50% -15%,#45221e 0%,transparent 48%),var(--bg);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  transition:background 1s ease,color .8s ease;
+}
+body.album-past{
+  --bg:#060d1b;--panel:rgba(12,28,53,.76);--solid:#101d34;
+  --text:#f1f7ff;--muted:#a3bbd8;--accent:#65aaff;--accent2:#9cd6ff;
+  --border:rgba(116,185,255,.23);--glow:rgba(47,132,255,.24);
+  background:radial-gradient(ellipse at 50% -15%,#142c5d 0%,transparent 52%),var(--bg);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--accent2);outline-offset:3px
+}
+::selection{background:#ff884e;color:#170b06}
+.ambient{position:fixed;inset:0;overflow:hidden;z-index:-1;pointer-events:none;contain:strict}
+.ambient-grid{
+  position:absolute;inset:0;opacity:.13;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 90%)
+}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.25;animation:floatOrb 19s ease-in-out infinite alternate;transition:background 1s}
+.orb-one{width:360px;height:360px;background:#ff663b;top:4%;left:-150px}
+.orb-two{width:420px;height:420px;background:#d34b94;top:37%;right:-220px;animation-delay:-7s}
+.orb-three{width:340px;height:340px;background:#ffb253;top:75%;left:15%;animation-delay:-12s}
+body.album-past .orb-one{background:#177dff}
+body.album-past .orb-two{background:#653bff}
+body.album-past .orb-three{background:#00d6ed}
+@keyframes floatOrb{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(55px,45px) scale(1.13)}
+  100%{transform:translate(-25px,85px) scale(.92)}
+}
+.container{width:min(1120px,calc(100% - 36px));margin:auto;padding:26px 0 65px;position:relative}
+.hero{padding:25px 0 30px;animation:intro .9s cubic-bezier(.2,.7,.2,1) both}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:48px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--accent2);font-size:11px;letter-spacing:2px;font-weight:950}
+.logo-dot{width:9px;height:9px;border-radius:50%;background:#ff792f;box-shadow:0 0 17px #ff792f;animation:pulse 2s infinite}
+.admin-button{
+  border:1px solid var(--border);color:var(--text);
+  background:linear-gradient(135deg,rgba(255,126,55,.13),rgba(255,255,255,.025));
+  padding:11px 16px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.8px;
+  backdrop-filter:blur(18px);transition:.3s;box-shadow:0 0 20px rgba(255,111,35,.05)
+}
+.admin-button:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 0 28px var(--glow)}
+.hero-label{display:flex;align-items:center;gap:10px;color:var(--muted);text-transform:uppercase;letter-spacing:3px;font-size:10px;font-weight:800;margin-bottom:19px}
+.live-dot{width:7px;height:7px;flex-shrink:0;border-radius:50%;background:#7bffb0;box-shadow:0 0 12px #7bffb0;animation:pulse 2s infinite}
+h1{margin:0;font-size:clamp(48px,10vw,100px);font-weight:1000;line-height:.89;letter-spacing:-.075em}
+.hero-gradient{
+  color:transparent;background:linear-gradient(100deg,#ff814a,#ffbd7c 38%,#f77eb9 75%,#bb94ff);
+  background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 0 22px rgba(255,115,66,.1))
+}
+body.album-past .hero-gradient{background-image:linear-gradient(100deg,#72b8ff,#72f1ff 45%,#b2a1ff)}
+.subtitle{max-width:570px;margin:24px 0 0;font-size:14px;line-height:1.9;color:var(--muted)}
+.hero-bottom{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.status-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--border);background:rgba(255,255,255,.035);border-radius:999px;color:var(--muted);font-size:10px;letter-spacing:.7px;font-weight:800}
+.section{
+  position:relative;isolation:isolate;margin-top:25px;overflow:hidden;
+  border:1px solid var(--border);border-radius:23px;background:var(--panel);
+  box-shadow:0 25px 90px var(--shadow),0 0 38px var(--glow);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  transition:background .8s,border-color .8s,box-shadow .4s
+}
+.section::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.035) 48%,transparent 70%);
+  background-size:220% 100%;animation:neonSweep 9s linear infinite
+}
+.section-header{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:24px 26px;border-bottom:1px solid var(--border);background:linear-gradient(110deg,rgba(255,255,255,.035),transparent)}
+.eyebrow{color:var(--accent2);font-size:9px;font-weight:950;letter-spacing:2.7px;margin-bottom:9px}
+.section-header h2{margin:0;font-size:16px;font-weight:950;letter-spacing:1.2px}
+.section-body{padding:25px 26px}
+.pill{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:7px 10px;border-radius:999px;color:var(--accent2);background:var(--glow);border:1px solid var(--border);font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.before-section{
+  --accent:#ff792f;--accent2:#ffd08a;--border:rgba(255,139,67,.29);
+  --glow:rgba(255,105,35,.20);--panel:rgba(43,22,16,.85);--muted:#d8b3a0;
+  color:#fff5f0;
+  background:radial-gradient(ellipse at 0 0,rgba(255,94,28,.12),transparent 43%),linear-gradient(140deg,rgba(39,21,17,.97),rgba(24,15,20,.95));
+  box-shadow:0 25px 80px rgba(0,0,0,.3),0 0 35px rgba(255,105,35,.10)
+}
+.before-section .section-header{background:linear-gradient(100deg,rgba(255,117,43,.12),transparent 75%)}
+.before-section .eyebrow,.before-section .pill{color:#ffbd82}
+.before-section .section-header h2{text-shadow:0 0 20px rgba(255,110,38,.15)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:17px}
+.field{min-width:0;color:var(--text);background:rgba(0,0,0,.24);border:1px solid var(--border);border-radius:13px;padding:12px 14px;transition:border-color .25s,box-shadow .25s,transform .25s}
+.field:focus,.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow),0 0 22px var(--glow);outline:none}
+.toolbar .search{flex:1 1 230px}
+.toolbar select{flex:0 1 195px}
+#sortSelect{font-size:11px;font-weight:850;cursor:pointer;background-color:#211512;color:#ffca9d}
+#sortSelect option{background:#211512;color:#fff1e8}
+#sortSelect:hover{box-shadow:0 0 22px var(--glow)}
+.filter-row{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:19px}
+.filter-btn,.small-btn{
+  position:relative;overflow:hidden;border:1px solid var(--border);background:rgba(255,255,255,.035);
+  color:var(--muted);border-radius:11px;padding:10px 15px;font-size:10px;font-weight:900;letter-spacing:.8px;
+  transition:transform .25s,background .25s,color .25s,box-shadow .25s,border-color .25s
+}
+.filter-btn:hover,.small-btn:hover{transform:translateY(-2px);color:var(--text);border-color:var(--accent)}
+.before-section .filter-btn:hover{color:#ffd2ae;box-shadow:0 0 20px rgba(255,105,35,.13)}
+.filter-btn.active{
+  color:#241006;border-color:transparent;background:linear-gradient(110deg,var(--accent),var(--accent2));
+  box-shadow:0 5px 22px var(--glow);animation:filterGlow 3s infinite
+}
+.filter-btn:active,.primary-btn:active,.secondary-btn:active,.danger-btn:active{transform:scale(.97)}
+@keyframes filterGlow{50%{box-shadow:0 5px 30px var(--glow)}}
+.table-wrap{border:1px solid var(--border);border-radius:15px;overflow-x:auto;background:rgba(0,0,0,.14)}
+.before-section .table-wrap{border-color:rgba(255,132,62,.23);box-shadow:inset 0 0 24px rgba(255,105,35,.025)}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th{padding:15px;background:rgba(255,255,255,.035);color:var(--muted);text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:1.4px}
+.before-section th{color:#ffbd91;background:rgba(255,117,43,.065)}
+td{padding:16px 15px;border-top:1px solid rgba(255,255,255,.055);font-size:12px;color:var(--muted)}
+tbody tr{transition:background .25s;animation:rowEnter .35s ease both}
+tbody tr:hover{background:var(--glow)}
+.before-section tbody tr:hover{background:rgba(255,112,43,.09);box-shadow:inset 3px 0 #ff792f}
+.track-name{font-weight:850;color:var(--text);font-size:13px;transition:color .25s,text-shadow .25s}
+.before-section tbody tr:hover .track-name{color:#ffd0a3;text-shadow:0 0 16px rgba(255,122,47,.2)}
+.empty{padding:32px 15px;text-align:center;color:var(--muted);font-size:12px}
+.muted{color:var(--muted)}
+@keyframes rowEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+#trackTable.filter-refresh tr{animation:rowEnter .32s ease both}
+#trackTable.filter-refresh tr:nth-child(2){animation-delay:25ms}
+#trackTable.filter-refresh tr:nth-child(3){animation-delay:50ms}
+#trackTable.filter-refresh tr:nth-child(4){animation-delay:75ms}
 
-.scroll-blue-bg{
-position:fixed;inset:0;z-index:-3;pointer-events:none;
-background:
-radial-gradient(circle at 20% 80%,rgba(0,130,255,.34),transparent 30%),
-radial-gradient(circle at 85% 75%,rgba(110,70,255,.28),transparent 32%),
-linear-gradient(135deg,#061225,#10102e 50%,#061a2b);
-opacity:0;
-transform:scale(1.08);
-transition:opacity .8s ease,transform 1.2s ease;
+/* PERMANENT BLUE ALBUM */
+.album-section{
+  --accent:#65b5ff;--accent2:#9be9ff;--border:rgba(106,178,255,.25);
+  --glow:rgba(50,144,255,.22);
+  color:#f0f8ff;background:rgba(10,29,57,.83);
+  border-color:rgba(102,184,255,.35);
+  box-shadow:0 25px 90px rgba(0,50,160,.17),0 0 40px rgba(35,135,255,.12)
 }
-body.album-near .scroll-blue-bg{opacity:1;transform:scale(1)}
-body.album-near{background:#071225}
-body.album-near:before{background:#168cff;animation-duration:11s}
-body.album-near:after{background:#693cff;animation-duration:13s}
-.album-coming-soon{
-position:relative;overflow:hidden;margin-top:46px;min-height:300px;
-display:flex;align-items:center;justify-content:center;text-align:center;
-border-radius:32px;padding:55px 30px;
-background:
-linear-gradient(135deg,rgba(25,132,255,.72),rgba(83,55,255,.62) 48%,rgba(0,206,255,.56));
-border:1px solid rgba(255,255,255,.22);
-box-shadow:0 35px 100px rgba(0,50,180,.28),inset 0 1px 0 rgba(255,255,255,.34);
-backdrop-filter:blur(28px);
-animation:albumFloat 7s ease-in-out infinite alternate;
+.album-banner{
+  position:relative;isolation:isolate;overflow:hidden;min-height:310px;
+  padding:clamp(30px,6vw,62px);display:flex;flex-direction:column;justify-content:center;
+  color:#f0f8ff;
+  background:radial-gradient(ellipse at 82% 10%,rgba(89,209,255,.36),transparent 33%),radial-gradient(ellipse at 5% 100%,rgba(109,81,255,.36),transparent 40%),linear-gradient(125deg,#07142e,#0b3672 47%,#086fbd);
+  border-bottom:1px solid rgba(106,178,255,.23)
 }
-.album-coming-soon:before{
-content:"";position:absolute;inset:-50%;
-background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.12) 50%,transparent 65%);
-transform:translateX(-55%) rotate(8deg);
-animation:albumShine 6s ease-in-out infinite;
+.album-banner::before{
+  content:"";position:absolute;inset:-60%;z-index:-1;
+  background:conic-gradient(from 0deg,transparent 0 30%,rgba(88,191,255,.18) 42%,transparent 55% 100%);
+  animation:rotateGlow 24s linear infinite
 }
-@keyframes albumShine{0%,55%{transform:translateX(-60%) rotate(8deg)}100%{transform:translateX(60%) rotate(8deg)}}
-@keyframes albumFloat{from{transform:translateY(0)}to{transform:translateY(-8px)}}
-.album-glow{position:absolute;border-radius:50%;background:rgba(255,255,255,.12);filter:blur(4px);pointer-events:none}
-.album-glow-one{width:360px;height:360px;left:-130px;top:-210px;animation:albumOrb1 8s ease-in-out infinite alternate}
-.album-glow-two{width:300px;height:300px;right:-110px;bottom:-190px;animation:albumOrb2 9s ease-in-out infinite alternate}
-@keyframes albumOrb1{to{transform:translate(180px,130px) scale(1.25)}}
-@keyframes albumOrb2{to{transform:translate(-150px,-100px) scale(1.3)}}
-.album-content{position:relative;z-index:2}
-.album-eyebrow{font-size:11px;font-weight:900;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:13px}
-.album-title{font-size:clamp(34px,7vw,72px);line-height:1;font-weight:900;letter-spacing:-3px;color:#fff;text-shadow:0 10px 40px rgba(0,20,100,.35)}
-.album-subtitle{margin-top:16px;font-size:14px;color:rgba(255,255,255,.78)}
-.album-status{display:inline-flex;align-items:center;gap:8px;margin-top:22px;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);font-size:10px;font-weight:900;letter-spacing:1px;color:rgba(255,255,255,.75)}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 14px #fff;animation:statusPulse 1.6s ease-in-out infinite}
-@keyframes statusPulse{50%{transform:scale(1.5);opacity:.55}}
+.album-banner::after{
+  content:"♪";position:absolute;right:5%;bottom:-125px;color:rgba(255,255,255,.075);
+  font-size:clamp(240px,35vw,400px);line-height:1;font-weight:950;pointer-events:none
+}
+.album-kicker{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;border:1px solid rgba(142,217,255,.28);background:rgba(83,171,255,.1);border-radius:999px;padding:8px 12px;margin-bottom:22px;color:#c9edff;font-size:9px;font-weight:900;letter-spacing:2px;backdrop-filter:blur(12px)}
+.album-banner .eyebrow{color:#8fe6ff}
+.album-banner h2{position:relative;z-index:1;margin:0;max-width:850px;font-size:clamp(45px,9vw,91px);font-weight:1000;letter-spacing:-.075em;line-height:.89;color:transparent;background:linear-gradient(100deg,#fff,#bdeaff 42%,#75c5ff 75%,#b8a5ff);background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 4px 35px rgba(75,168,255,.2))}
+.album-banner p{position:relative;z-index:1;max-width:510px;margin:22px 0 0;color:#c2dcfa;font-size:13px;line-height:1.9}
+.album-section .section-body{color:#f0f8ff;background:radial-gradient(ellipse at 100% 0%,rgba(28,104,211,.13),transparent 42%),linear-gradient(180deg,rgba(8,22,44,.25),rgba(5,15,33,.35))}
+.album-title-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.album-title{font-size:10px;font-weight:950;letter-spacing:2.3px;color:#8edaff}
+.album-list{display:grid;gap:10px}
+.album-track{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:15px;padding:16px 17px;
+  border:1px solid rgba(119,184,255,.19);border-radius:15px;
+  background:linear-gradient(115deg,rgba(30,75,128,.34),rgba(16,37,69,.42));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+  transition:transform .35s,border-color .3s,box-shadow .3s,background .3s;
+  animation:trackEnter .55s cubic-bezier(.2,.7,.2,1) both
+}
+.album-track::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:linear-gradient(180deg,transparent,#61baff,#9d94ff,transparent)}
+.album-track:hover{transform:translateY(-4px) scale(1.008);border-color:rgba(112,196,255,.6);background:linear-gradient(115deg,rgba(37,98,163,.48),rgba(20,48,88,.6));box-shadow:0 12px 35px rgba(0,82,190,.2),0 0 22px rgba(60,155,255,.08)}
+.album-number{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,rgba(87,172,255,.2),rgba(126,105,255,.14));border:1px solid rgba(127,192,255,.23);color:#a5ddff;font-size:12px;font-weight:950;transition:.3s}
+.album-track:hover .album-number{transform:rotate(-4deg) scale(1.07);box-shadow:0 0 20px rgba(80,170,255,.18)}
+.album-song{overflow-wrap:anywhere;color:#f3f8ff;font-size:14px;font-weight:850}
+.album-subtitle{margin-top:6px;color:#a6c4e7;font-size:10px;line-height:1.5}
+.album-actions{display:flex;gap:7px;align-items:center}
+.album-actions button{border:1px solid rgba(120,193,255,.25);border-radius:9px;padding:8px 10px;background:rgba(70,149,235,.1);color:#bde5ff;font-size:10px;font-weight:850;transition:.25s}
+.album-actions button:hover{background:rgba(83,168,255,.25);border-color:#7bc6ff;transform:translateY(-2px);box-shadow:0 0 18px rgba(83,168,255,.12)}
+.album-footer{margin-top:19px;color:#87a9ce;font-size:10px;line-height:1.8}
+@keyframes rotateGlow{to{transform:rotate(360deg)}}
+@keyframes trackEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes neonSweep{0%{background-position:180% 0}100%{background-position:-180% 0}}
 
-@media(max-width:700px){.container{width:min(100% - 18px,1400px);padding-top:15px}.hero{padding:38px 25px;border-radius:24px}.hero h1{letter-spacing:-2px}.era-banner{padding:20px}.controls{flex-direction:column;align-items:stretch}.search-box{width:100%}.main-button{width:100%}.category-bar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.category-button{white-space:nowrap}.sort-bar{align-items:stretch}.preset-select{width:100%}.form-grid{grid-template-columns:1fr}.form-full{grid-column:auto}.admin-toast{left:12px;right:12px;bottom:12px}.coming-soon{padding:38px 20px}}
+/* REVEALS AND MODALS */
+.reveal{opacity:0;transform:translateY(24px) scale(.99);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.is-visible{opacity:1;transform:translateY(0) scale(1)}
+.modal-backdrop{display:none;position:fixed;inset:0;z-index:100;overflow-y:auto;padding:18px;align-items:center;justify-content:center;background:rgba(2,5,14,.77);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.modal-backdrop.open{display:flex;animation:backdropIn .22s ease both}
+.modal{position:relative;width:min(530px,100%);max-height:calc(100vh - 36px);overflow-y:auto;padding:26px;border-radius:22px;border:1px solid var(--border);background:radial-gradient(ellipse at 0 0,rgba(255,111,35,.1),transparent 48%),linear-gradient(145deg,#25171b,#17121c);color:var(--text);box-shadow:0 30px 110px rgba(0,0,0,.55),0 0 45px var(--glow);animation:modalEnter .3s cubic-bezier(.2,.7,.2,1) both}
+.modal h2{margin:0 0 9px;font-size:22px;font-weight:950;letter-spacing:-.7px}
+.modal-desc{margin:0 0 23px;color:var(--muted);font-size:12px;line-height:1.8}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.form-field.full{grid-column:1/-1}
+.form-field label{color:var(--muted);font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:1.3px}
+.form-field input,.form-field select,.form-field textarea{width:100%;border:1px solid var(--border);border-radius:11px;padding:12px;background:rgba(0,0,0,.25);color:var(--text);transition:border-color .2s,box-shadow .2s}
+.form-field input:hover,.form-field select:hover,.form-field textarea:hover{border-color:var(--accent)}
+.form-field textarea{min-height:85px;resize:vertical}
+.form-field select option{background:#201821;color:white}
+.modal-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:9px;margin-top:22px}
+.primary-btn,.secondary-btn,.danger-btn{border-radius:10px;padding:11px 14px;font-size:10px;font-weight:950;letter-spacing:.5px;transition:transform .2s,filter .2s,box-shadow .2s}
+.primary-btn{border:1px solid transparent;color:#100d15;background:linear-gradient(110deg,var(--accent),var(--accent2));box-shadow:0 5px 18px var(--glow)}
+.secondary-btn{border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,.045)}
+.danger-btn{border:1px solid rgba(255,111,135,.4);color:#ff91a4;background:rgba(255,65,101,.07)}
+.primary-btn:hover,.secondary-btn:hover,.danger-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+#adminModal .eyebrow,#trackModal .eyebrow,#loginModal .eyebrow{color:#ffb17a}
+#adminModal .modal h2{background:linear-gradient(100deg,#fff6ef,#ffb77e 75%,#ff83a9);color:transparent;background-clip:text;-webkit-background-clip:text}
+.admin-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:13px;margin-bottom:22px;border:1px solid rgba(255,139,79,.17);border-radius:15px;background:rgba(255,126,55,.045)}
+.admin-tools .primary-btn{min-height:47px;line-height:1.5}
+#addBeforeButton{background:linear-gradient(115deg,#ff762e,#ffc27c)}
+#addAlbumButton{color:#061326;background:linear-gradient(115deg,#6ab7ff,#a3f0ff);box-shadow:0 4px 18px rgba(65,155,255,.16)}
+#adminTrackPicker{min-height:46px;background-color:#17121a}
+#adminTrackPicker option{background:#17121a;color:#fff4ed}
+.toast{position:fixed;z-index:200;bottom:22px;left:50%;width:max-content;max-width:calc(100% - 30px);padding:13px 18px;color:var(--text);background:rgba(27,25,40,.95);border:1px solid var(--border);border-radius:13px;font-size:12px;text-align:center;backdrop-filter:blur(20px);box-shadow:0 10px 40px rgba(0,0,0,.3),0 0 25px var(--glow);opacity:0;pointer-events:none;transform:translate(-50%,15px);transition:opacity .25s,transform .25s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.context-menu{display:none;position:fixed;z-index:150;min-width:170px;padding:6px;border:1px solid var(--border);border-radius:12px;background:rgba(30,25,38,.97);backdrop-filter:blur(20px);box-shadow:0 15px 45px rgba(0,0,0,.45);animation:modalEnter .16s ease both}
+.context-menu.open{display:block}
+.context-menu button{display:block;width:100%;text-align:left;padding:10px 12px;color:var(--text);background:transparent;border:0;border-radius:7px;font-size:11px;transition:.2s}
+.context-menu button:hover{padding-left:16px;background:var(--glow)}
+footer{padding:28px 10px 0;text-align:center;color:var(--muted);font-size:9px;line-height:2;letter-spacing:2px}
+@keyframes intro{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes modalEnter{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes backdropIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+@media(max-width:620px){
+  .container{width:calc(100% - 22px);padding-top:14px}
+  .topbar{margin-bottom:38px}.logo{font-size:9px;letter-spacing:1.4px}
+  .admin-button{padding:10px 12px}.hero{padding-top:22px}
+  .section{border-radius:18px}.section-header,.section-body{padding:17px}
+  .album-banner{min-height:280px;padding:28px 20px}
+  .album-track{grid-template-columns:38px minmax(0,1fr);gap:11px;padding:13px 11px}
+  .album-number{width:34px;height:34px}.album-actions{grid-column:2}
+  .form-grid,.admin-tools{grid-template-columns:1fr}
+  .form-field.full{grid-column:auto}.modal{padding:21px}
+  #sortSelect{flex:1 1 100%}.filter-btn{padding:10px 12px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+
+
+/* Archive filter enhancements — uses the existing theme variables and colors. */
+.filter-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-4px 0 19px}
+.filter-label{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:9px;font-weight:950;letter-spacing:1.5px}
+#yearFilter{min-width:135px;padding:10px 12px;font-size:10px;font-weight:850;cursor:pointer;background-color:#211512;color:#ffca9d}
+#yearFilter option{background:#211512;color:#fff1e8}
+.filter-count{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;margin-left:5px;padding:0 5px;border-radius:999px;background:rgba(255,255,255,.10);font-size:9px;letter-spacing:0}
+.filter-btn.active .filter-count{background:rgba(0,0,0,.20)}
+.filter-status{flex:1;min-width:150px;color:var(--muted);font-size:10px;line-height:1.6}
+.filter-reset{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:rgba(255,255,255,.035);color:var(--accent2);font-size:9px;font-weight:950;letter-spacing:.8px;transition:transform .25s,border-color .25s,box-shadow .25s}
+.filter-reset:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 0 18px var(--glow)}
+.track-description{margin-top:6px;color:var(--text);font-size:12px;line-height:1.65;overflow-wrap:anywhere}
+.track-details-text{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.6;overflow-wrap:anywhere}
+.album-description{margin-top:8px;max-width:620px;color:var(--text);font-size:12px;line-height:1.75;overflow-wrap:anywhere}
+.album-details{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.65;overflow-wrap:anywhere}
+@media(max-width:640px){
+  .filter-tools{align-items:stretch}
+  .filter-label{flex:1;justify-content:space-between}
+  #yearFilter{flex:1;min-width:0}
+  .filter-status{flex-basis:100%;order:3}
+  .filter-reset{margin-left:auto}
+}
+
 </style>
 </head>
 
 <body>
-
-<div class="scroll-blue-bg"></div>
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-grid"></div><div class="orb orb-one"></div>
+  <div class="orb orb-two"></div><div class="orb orb-three"></div>
+</div>
 
 <div class="container">
+<header class="hero">
+  <div class="topbar">
+    <div class="logo"><span class="logo-dot"></span> JOPPEPOPE / MUSIC ARCHIVE</div>
+    <button class="admin-button" id="adminButton">✳ ADMIN</button>
+  </div>
+  <div class="hero-label"><span class="live-dot"></span> THE OFFICIAL TRACK ARCHIVE</div>
+  <h1>JOPPEPOPE<br><span class="hero-gradient">TRACKER.</span></h1>
+  <p class="subtitle">Every song has a story. Explore the archive, discover the tracks, and follow the journey into the next era.</p>
+  <div class="hero-bottom">
+    <span class="status-chip"><span class="live-dot"></span> ARCHIVE ONLINE</span>
+    <span class="status-chip">✦ TWO MUSICAL ERAS</span>
+  </div>
+</header>
 
-<section class="hero">
-<div class="hero-content">
-<div class="hero-small">Unreleased Music Archive</div>
-<h1>JOPPEPOPE<br>TRACKER</h1>
-<p class="hero-subtitle">A personal archive of unreleased tracks, demos, ideas and forgotten sessions.</p>
-</div>
+<section class="section before-section reveal" id="beforeSection">
+  <div class="section-header">
+    <div><div class="eyebrow">01 / THE ARCHIVE</div><h2>BEFORE THE FIRST ALBUM</h2></div>
+    <span class="pill" id="beforeCount">0 TRACKS</span>
+  </div>
+  <div class="section-body">
+    <div class="toolbar">
+      <input class="field search" id="searchInput" placeholder="⌕  Search the archive..." aria-label="Search tracks">
+      <select class="field" id="sortSelect" aria-label="Sort tracks">
+        <option value="newest">✦ NEWEST FIRST</option>
+        <option value="oldest">◷ OLDEST FIRST</option>
+        <option value="name">Ａ–Ｚ NAME</option>
+        <option value="year">▤ BY YEAR</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" data-category="all">✦ ALL TRACKS <span class="filter-count" id="countAll">0</span></button>
+      <button class="filter-btn" data-category="best">★ BEST <span class="filter-count" id="countBest">0</span></button>
+      <button class="filter-btn" data-category="worst">↘ WORST <span class="filter-count" id="countWorst">0</span></button>
+    </div>
+    <div class="filter-tools">
+      <label class="filter-label" for="yearFilter">YEAR
+        <select class="field" id="yearFilter" aria-label="Filter tracks by year">
+          <option value="all">ALL YEARS</option>
+        </select>
+      </label>
+      <div class="filter-status" id="filterStatus" aria-live="polite">Showing all tracks</div>
+      <button class="filter-reset" id="resetFiltersButton" type="button">↺ RESET FILTERS</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Track</th><th>Year</th><th>Length</th><th>Category</th><th>Description / Details</th></tr></thead>
+        <tbody id="trackTable"><tr><td colspan="5" class="empty">Loading the archive...</td></tr></tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:10px;line-height:1.8;margin:14px 0 0">Double-click a track to edit it while admin mode is unlocked. Right-click a track for quick commands.</p>
+  </div>
 </section>
 
-<section class="era-section">
-
-<div class="era-banner">
-<div class="era-title">BEFORE THE FIRST ALBUM</div>
-</div>
-
-<div class="search-box">
-<input id="searchInput" type="text" placeholder="Search song name..." oninput="renderTracks()">
-</div>
-
-<button class="main-button" onclick="openLogin()">🔐 ADMIN</button>
-<button class="main-button" id="addButton" onclick="openAddModal()" style="display:none;">＋ ADD TRACK</button>
-<div class="admin-indicator" id="adminIndicator">ADMIN MODE</div>
-
+<section class="section album-section reveal" id="albumSection">
+  <div class="album-banner">
+    <div class="album-kicker"><span class="live-dot"></span> 02 / THE NEXT ERA</div>
+    <h2>ALBUM<br>COMING SOON.</h2>
+    <p>A new chapter is on the way. Seven tracks, new stories, and a whole new era. The journey starts here.</p>
+  </div>
+  <div class="section-body" id="albumTracklist">
+    <div class="album-title-row">
+      <div><div class="eyebrow">THE UPCOMING RELEASE</div><div class="album-title">✦ ALBUM TRACKLIST</div></div>
+      <span class="pill" id="albumCount">7 TRACKS</span>
+    </div>
+    <div class="album-list" id="albumList"><div class="empty">Loading album tracklist...</div></div>
+    <div class="album-footer">TRACKLIST SUBJECT TO CHANGE · Untitled songs are placeholders until their names are decided.</div>
+  </div>
 </section>
-
-<div class="category-bar">
-<button id="allButton" class="category-button active" onclick="setCategory('all')">ALL TRACKS</button>
-<button id="bestButton" class="category-button" onclick="setCategory('best')">⭐ BEST OF</button>
-<button id="worstButton" class="category-button" onclick="setCategory('worst')">🗑️ WORST OF</button>
+<footer>JOPPEPOPE TRACKER<br><span style="opacity:.65">A MUSIC ARCHIVE · BUILT FOR THE NEXT ERA ✦</span></footer>
 </div>
 
-<div class="sort-bar">
-<span class="sort-label">VIEW PRESET</span>
-<select id="sortSelect" class="preset-select" onchange="setSort(this.value)">
-<option value="default">Original order</option>
-<option value="year-new">Newest year first</option>
-<option value="year-old">Oldest year first</option>
-<option value="date-new">Newest date made</option>
-<option value="date-old">Oldest date made</option>
-<option value="name-az">Name A–Z</option>
-<option value="name-za">Name Z–A</option>
-</select>
-</div>
-
-<div class="table-wrapper" id="tableWrapper">
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Name</th>
-<th>Year</th>
-<th>Date Made</th>
-<th>Type / Details</th>
-<th>Song Length</th>
-<th>Link</th>
-</tr>
-</thead>
-<tbody id="trackTable"></tbody>
-</table>
-</div>
-
-<section class="album-coming-soon" id="albumComingSoon">
-<div class="album-glow album-glow-one"></div>
-<div class="album-glow album-glow-two"></div>
-<div class="album-content">
-<div class="album-eyebrow">THE NEXT ERA</div>
-<div class="album-title">ALBUM COMING SOON</div>
-<div class="album-subtitle">The album doesn't have a name yet... but it's on the way.</div>
-<div class="album-status"><span class="status-dot"></span> TITLE • COMING SOON</div>
-</div>
-</section>
-
-</div>
-
-</div>
-
+<!-- LOGIN -->
 <div class="modal-backdrop" id="loginModal">
-<div class="modal login-box">
-<h2>Admin Login</h2>
-<p class="login-message">Enter the admin password to manage the archive.</p>
-<div class="form-group">
-<label>Password</label>
-<input id="loginPassword" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
-</div>
-<div class="modal-actions">
-<button class="cancel-button" onclick="closeLogin()">Cancel</button>
-<button class="main-button" onclick="login()">Enter</button>
-</div>
-</div>
+  <div class="modal">
+    <div class="eyebrow">RESTRICTED AREA / 01</div>
+    <h2>Welcome back.</h2>
+    <p class="modal-desc">Unlock admin access to manage songs in both eras.</p>
+    <form id="loginForm">
+      <div class="form-field"><label for="adminPassword">Admin password</label><input id="adminPassword" type="password" autocomplete="current-password" required></div>
+      <div class="modal-actions">
+        <button class="secondary-btn" type="button" data-close="loginModal">CANCEL</button>
+        <button class="primary-btn" type="submit">UNLOCK ACCESS ↗</button>
+      </div>
+    </form>
+  </div>
 </div>
 
+<!-- TRACK EDITOR -->
 <div class="modal-backdrop" id="trackModal">
-<div class="modal">
-<h2 id="modalTitle">Add Track</h2>
-
-<div class="form-grid">
-
-<div class="form-group form-full">
-<label>Song Name</label>
-<input id="trackName" type="text" placeholder="Untitled">
+  <div class="modal">
+    <div class="eyebrow">TRACK MANAGEMENT / EDITOR</div>
+    <h2 id="trackModalTitle">Add a track</h2>
+    <p class="modal-desc">Edit the song information, add an audio link, or move it to another era.</p>
+    <form id="trackForm">
+      <input type="hidden" id="trackId">
+      <div class="form-grid">
+        <div class="form-field full"><label for="trackName">Track name</label><input id="trackName" maxlength="160" placeholder="Untitled" required></div>
+        <div class="form-field"><label for="trackEra">Era / section</label><select id="trackEra"><option value="before">Before the first album</option><option value="album">Upcoming album</option></select></div>
+        <div class="form-field"><label for="trackYear">Year</label><input id="trackYear" type="number" min="1900" max="2200" placeholder="2026"></div>
+        <div class="form-field"><label for="trackDate">Date</label><input id="trackDate" type="date"></div>
+        <div class="form-field"><label for="trackLength">Length</label><input id="trackLength" placeholder="2:45"></div>
+        <div class="form-field"><label for="trackCategory">Category</label><select id="trackCategory"><option value="none">None</option><option value="best">Best</option><option value="worst">Worst</option></select></div>
+        <div class="form-field"><label for="trackLink">Audio link</label><input id="trackLink" type="url" placeholder="https://..."></div>
+        <div class="form-field full"><label for="trackDetails">Details / notes</label><textarea id="trackDetails" placeholder="Extra notes, credits, or other details..."></textarea></div>
+        <div class="form-field full"><label for="trackDescription">Song description</label><textarea id="trackDescription" maxlength="2000" placeholder="What is this song about? Add a description that appears in the tracklist..."></textarea></div>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" type="button" data-close="trackModal">CANCEL</button>
+        <button class="primary-btn" type="submit">SAVE TRACK ✦</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<div class="form-group">
-<label>Era</label>
-<select id="trackEra">
-<option value="before">BEFORE THE FIRST ALBUM</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>Year</label>
-<input id="trackYear" type="text" placeholder="2024">
-</div>
-
-<div class="form-group">
-<label>Date Made</label>
-<input id="trackDate" type="date">
-</div>
-
-<div class="form-group">
-<label>Song Length</label>
-<input id="trackLength" type="text" placeholder="3:42">
-</div>
-
-<div class="form-group">
-<label>Category</label>
-<select id="trackCategory">
-<option value="none">No Category</option>
-<option value="best">⭐ Best Of</option>
-<option value="worst">🗑️ Worst Of</option>
-</select>
-</div>
-
-<div class="form-group form-full">
-<label>Type / Details</label>
-<input id="trackDetails" type="text" placeholder="Instrumental, Demo, Vocals...">
-</div>
-
-<div class="form-group form-full">
-<label>Link</label>
-<input id="trackLink" type="url" placeholder="https://whyp.it/...">
-</div>
-
-</div>
-
-<div class="modal-actions">
-<button class="cancel-button" onclick="closeTrackModal()">Cancel</button>
-<button class="main-button" onclick="saveTrack()">Save Track</button>
-</div>
-
-</div>
+<!-- ADMIN CONTROL CENTRE -->
+<div class="modal-backdrop" id="adminModal">
+  <div class="modal">
+    <div class="eyebrow">CONTROL CENTRE / ADMIN CONSOLE</div>
+    <h2>Your music. Your archive.</h2>
+    <p class="modal-desc">Manage your catalogue. Add songs, edit details, delete tracks, or move songs between eras.</p>
+    <div class="admin-tools">
+      <button class="primary-btn" id="addBeforeButton">＋ BEFORE-ALBUM TRACK</button>
+      <button class="primary-btn" id="addAlbumButton">＋ ALBUM TRACK</button>
+    </div>
+    <div class="form-field"><label for="adminTrackPicker">Select a track to manage</label><select id="adminTrackPicker"><option value="">Select a track...</option></select></div>
+    <div class="modal-actions" style="justify-content:space-between">
+      <button class="danger-btn" id="deleteTrackButton" type="button">⌫ DELETE</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="secondary-btn" type="button" data-close="adminModal">CLOSE</button>
+        <button class="primary-btn" id="editTrackButton" type="button">EDIT TRACK ↗</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="context-menu" id="contextMenu">
-<button onclick="contextEdit()">✏️ Edit Track</button>
-<button onclick="contextDelete()">🗑️ Delete Track</button>
+  <button id="contextEditButton">✎ Edit track</button>
+  <button id="contextOpenButton">↗ Open audio link</button>
 </div>
-
-<div class="admin-toast" id="adminToast">
-<div class="toast-icon">✓</div>
-<div>
-<div class="toast-title">ADMIN MODE ENABLED</div>
-<div class="toast-text">You can now edit and manage the archive.</div>
-</div>
-</div>
-
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+(() => {
+"use strict";
 
-/* =========================================================
-   SUPABASE SETTINGS
-   =========================================================
+const SUPABASE_URL = "https://ylgkbggnrymsnyuuvksf.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_akS38WHr22fSNq7JGTNeeA_M6MhVC1y";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-   PASTE YOUR SUPABASE PROJECT URL BETWEEN THE QUOTES.
-   PASTE YOUR SUPABASE PUBLISHABLE/ANON KEY BETWEEN THE QUOTES.
+const defaultBeforeTracks = [{
+  name:"Untitled",year:"",date:"",details:"",description:"",length:"",link:"",
+  category:"none",era:"before"
+}];
 
-   DO NOT PUT YOUR SERVICE ROLE / SECRET KEY HERE.
-   ========================================================= */
-
-const SUPABASE_URL="https://ylgkbggnrymsnyuuvksf.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_akS38WHr22fSNq7JGTNeeA_M6MhVC1y";
-
-const supabaseClient=window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
-
-
-/* =========================================================
-   ADMIN PASSWORD
-   ========================================================= */
-
-const ADMIN_PASSWORD="start";
-
-
-/* =========================================================
-   DEFAULT SONGS
-   ========================================================= */
-
-const defaultTracks=[
-{
-name:"Untitled",
-year:"2023",
-date:"",
-details:"",
-length:"2:34",
-link:"",
-category:"none",
-era:"before"
-},
-{
-name:"Untitled 2",
-year:"2024",
-date:"",
-details:"",
-length:"3:12",
-link:"",
-category:"none",
-era:"before"
-},
-{
-name:"Untitled 3",
-year:"2024",
-date:"",
-details:"",
-length:"1:58",
-link:"",
-category:"none",
-era:"before"
-}
-];
-
-
-/* =========================================================
-   LOCAL STORAGE
-   =========================================================
-
-   This is ONLY used as a one-time backup/migration for
-   your old PC data.
-
-   The actual shared songs are now stored in Supabase.
-   ========================================================= */
-
-const STORAGE_KEY="joppepope_tracker";
-
-let localTracks=[];
-
-try{
-const oldData=localStorage.getItem(STORAGE_KEY);
-
-if(oldData){
-localTracks=JSON.parse(oldData);
-if(!Array.isArray(localTracks))localTracks=[];
-}
-}catch(error){
-localTracks=[];
-}
-
-
-/* =========================================================
-   APP STATE
-   ========================================================= */
+const defaultAlbumTracks = [
+  "Money to burn",
+  "Next page (I'm on my way)",
+  "Untitled",
+  "Addicted",
+  "Untitled",
+  "Untitled",
+  "Back Again"
+].map((name,index)=>({
+  name,year:"",date:"",details:"",description:"",length:"",link:"",
+  category:"none",era:"album",album_order:index+1
+}));
 
 let tracks=[];
+let activeCategory="all";
 let isAdmin=false;
-let currentCategory="all";
-let editingIndex=null;
-let contextIndex=null;
-let renderTimer=null;
-let currentSort="default";
+let contextTrackId=null;
+let toastTimeout;
+let scrollFrame=null;
+const $=id=>document.getElementById(id);
 
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function cleanTrack(t){
-
-return{
-id:t.id||null,
-name:t.name||"Untitled",
-year:t.year||"—",
-date:t.date||"",
-details:t.details||"",
-length:t.length||"—",
-link:t.link||"",
-category:t.category||"none",
-era:"before"
-};
-
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
 }
-
-
-function formatDate(date){
-
-if(!date)return"—";
-
-const p=date.split("-");
-
-return p.length===3
-?p[2]+"/"+p[1]+"/"+p[0]
-:date;
-
+function showToast(message){
+  $("toast").textContent=message;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>$("toast").classList.remove("show"),2800);
 }
+function openModal(id){$(id).classList.add("open")}
+function closeModal(id){$(id).classList.remove("open")}
 
+document.querySelectorAll("[data-close]").forEach(button=>{
+  button.addEventListener("click",()=>closeModal(button.dataset.close));
+});
+document.querySelectorAll(".modal-backdrop").forEach(backdrop=>{
+  backdrop.addEventListener("click",event=>{
+    if(event.target===backdrop)backdrop.classList.remove("open");
+  });
+});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    document.querySelectorAll(".modal-backdrop.open").forEach(modal=>modal.classList.remove("open"));
+    $("contextMenu").classList.remove("open");
+  }
+});
 
-function escapeHTML(v){
-
-return String(v)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
+function cleanTrack(row){
+  return {
+    id:row.id??null,name:row.name||"Untitled",
+    year:row.year??"",date:row.date||"",details:row.details||"",description:row.description||"",
+    length:row.length||"",link:row.link||"",
+    category:["best","worst"].includes(row.category)?row.category:"none",
+    era:row.era==="album"?"album":"before",
+    album_order:Number(row.album_order)||null,
+    created_at:row.created_at||""
+  };
 }
-
-
-/* =========================================================
-   LOAD SONGS FROM SUPABASE
-   ========================================================= */
+function trackPayload(track){
+  const payload={
+    name:track.name||"Untitled",
+    year:track.year===""||track.year==null?null:Number(track.year),
+    date:track.date||null,details:track.details||"",description:track.description||"",
+    length:track.length||"",link:track.link||"",
+    category:track.category||"none",
+    era:track.era==="album"?"album":"before"
+  };
+  if(payload.era==="album")payload.album_order=Number(track.album_order)||null;
+  return payload;
+}
+async function writeWithSchemaFallback(operation){
+  let result=await operation(true);
+  if(result.error&&/album_order|column/i.test(result.error.message||""))result=await operation(false);
+  return result;
+}
+async function insertDefaults(defaults){
+  const payloads=defaults.map(trackPayload);
+  let result=await supabaseClient.from("tracks").insert(payloads);
+  if(result.error&&/album_order|column/i.test(result.error.message||"")){
+    result=await supabaseClient.from("tracks").insert(payloads.map(({album_order,...rest})=>rest));
+  }
+  if(result.error){console.error("Could not insert starter tracks:",result.error);return false}
+  return true;
+}
 
 async function loadTracks(){
-
-try{
-
-const{data,error}=await supabaseClient
-.from("tracks")
-.select("*")
-.order("id",{ascending:true});
-
-if(error){
-console.error(error);
-alert("Could not connect to the song database. Check your Supabase URL and key.");
-tracks=defaultTracks.map(cleanTrack);
-renderTracks();
-return;
+  $("trackTable").innerHTML='<tr><td colspan="5" class="empty">Connecting to the archive...</td></tr>';
+  $("albumList").innerHTML='<div class="empty">Loading album tracks...</div>';
+  const {data,error}=await supabaseClient.from("tracks").select("*");
+  if(error){
+    console.error(error);
+    $("trackTable").innerHTML='<tr><td colspan="5" class="empty">Could not load tracks. Check Supabase settings and permissions.</td></tr>';
+    $("albumList").innerHTML='<div class="empty">Could not load the album tracklist.</div>';
+    showToast("Could not connect to the shared database.");
+    return;
+  }
+  let rows=data||[];
+  if(!rows.some(row=>row.era==="before"))await insertDefaults(defaultBeforeTracks);
+  if(!rows.some(row=>row.era==="album"))await insertDefaults(defaultAlbumTracks);
+  const refreshed=await supabaseClient.from("tracks").select("*");
+  if(refreshed.error){console.error(refreshed.error);tracks=rows.map(cleanTrack)}
+  else tracks=(refreshed.data||[]).map(cleanTrack);
+  renderAll();
 }
 
+function renderAll(){renderTracks();renderAlbum();renderAdminPicker()}
 
-/*
-   If the database is empty, use old local songs if this
-   device has them. Otherwise create the original defaults.
-*/
-
-if(!data||data.length===0){
-
-let songsToUpload=defaultTracks;
-
-if(localTracks.length>0){
-
-const localLooksLikeDefaults=
-localTracks.length===3 &&
-localTracks.every((t,i)=>
-(t.name||"")===(defaultTracks[i].name) &&
-(t.year||"")===defaultTracks[i].year &&
-(t.length||"")===defaultTracks[i].length
-);
-
-if(!localLooksLikeDefaults){
-songsToUpload=localTracks.map(cleanTrack);
+function getBeforeTracks(){
+  const search=$("searchInput").value.trim().toLowerCase();
+  const selectedYear=$("yearFilter").value;
+  let result=tracks.filter(track=>track.era==="before");
+  if(activeCategory!=="all")result=result.filter(track=>track.category===activeCategory);
+  if(selectedYear!=="all")result=result.filter(track=>String(track.year)===selectedYear);
+  if(search)result=result.filter(track=>
+    [track.name,track.year,track.description,track.details,track.length,track.category].join(" ").toLowerCase().includes(search)
+  );
+  const sort=$("sortSelect").value;
+  if(sort==="name")result.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(sort==="year")result.sort((a,b)=>Number(a.year||0)-Number(b.year||0));
+  else if(sort==="oldest")result.sort((a,b)=>String(a.date||a.created_at||"").localeCompare(String(b.date||b.created_at||"")));
+  else result.sort((a,b)=>String(b.date||b.created_at||"").localeCompare(String(a.date||a.created_at||"")));
+  return result;
 }
 
+function updateFilterControls(){
+  const before=tracks.filter(track=>track.era==="before");
+  const years=[...new Set(before.map(track=>String(track.year||"").trim()).filter(Boolean))].sort((a,b)=>Number(b)-Number(a));
+  const yearSelect=$("yearFilter");
+  const selected=yearSelect.value||"all";
+  const options=['<option value="all">ALL YEARS</option>',...years.map(year=>`<option value="${escapeHTML(year)}">${escapeHTML(year)}</option>`)];
+  yearSelect.innerHTML=options.join("");
+  yearSelect.value=years.includes(selected)?selected:"all";
+
+  $("countAll").textContent=before.length;
+  $("countBest").textContent=before.filter(track=>track.category==="best").length;
+  $("countWorst").textContent=before.filter(track=>track.category==="worst").length;
+  const visible=getBeforeTracks();
+  const hasFilters=Boolean($("searchInput").value.trim())||activeCategory!=="all"||yearSelect.value!=="all";
+  $("filterStatus").textContent=hasFilters
+    ? `Showing ${visible.length} of ${before.length} tracks${activeCategory!=="all"?" · "+activeCategory.toUpperCase():""}${yearSelect.value!=="all"?" · "+yearSelect.value:""}`
+    : `Showing all ${before.length} archive ${before.length===1?"track":"tracks"}`;
 }
 
-const{data:inserted,error:insertError}=await supabaseClient
-.from("tracks")
-.insert(songsToUpload.map(t=>({
-name:t.name,
-year:t.year,
-date:t.date,
-details:t.details,
-length:t.length,
-link:t.link,
-category:t.category,
-era:"before"
-})))
-.select();
-
-if(insertError){
-
-console.error(insertError);
-
-tracks=songsToUpload.map(cleanTrack);
-
-}else{
-
-tracks=(inserted||[]).map(cleanTrack);
-
+function renderTracks(){
+  const tbody=$("trackTable");
+  const before=tracks.filter(track=>track.era==="before");
+  updateFilterControls();
+  const visible=getBeforeTracks();
+  $("beforeCount").textContent=before.length+(before.length===1?" TRACK":" TRACKS");
+  if(!visible.length){
+    tbody.innerHTML='<tr><td colspan="5" class="empty">No tracks found. Try changing your search or filters.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=visible.map((track,index)=>`
+    <tr data-track-id="${escapeHTML(track.id)}" title="${isAdmin?"Double-click to edit":""}" style="animation-delay:${Math.min(index*30,240)}ms">
+      <td><div class="track-name">${escapeHTML(track.name)}</div>
+        ${track.description?`<div class="track-description">${escapeHTML(track.description)}</div>`:""}
+        ${track.link?`<div style="margin-top:8px"><button class="small-btn" data-action="play" data-id="${escapeHTML(track.id)}">▶ OPEN AUDIO ↗</button></div>`:""}
+      </td>
+      <td>${escapeHTML(track.year||"—")}</td>
+      <td>${escapeHTML(track.length||"—")}</td>
+      <td>${track.category!=="none"?`<span class="pill">${escapeHTML(track.category)}</span>`:"—"}</td>
+      <td>${track.details?`<div class="track-details-text">${escapeHTML(track.details)}</div>`:"—"}</td>
+    </tr>`).join("");
 }
 
-}else{
+function getAlbumTracks(){
+  return tracks.filter(track=>track.era==="album").sort((a,b)=>{
+    const orderA=Number(a.album_order||999),orderB=Number(b.album_order||999);
+    if(orderA!==orderB)return orderA-orderB;
+    return String(a.created_at||"").localeCompare(String(b.created_at||""));
+  });
+}
+function renderAlbum(){
+  const list=$("albumList"),album=getAlbumTracks();
+  $("albumCount").textContent=album.length+(album.length===1?" TRACK":" TRACKS");
+  if(!album.length){list.innerHTML='<div class="empty">No album tracks yet. Add some in admin.</div>';return}
+  list.innerHTML=album.map((track,index)=>{
+    const untitled=track.name.trim().toLowerCase()==="untitled";
+    const subtitle=untitled?"TITLE TO BE ANNOUNCED":"UPCOMING ALBUM TRACK";
+    return `<div class="album-track" data-track-id="${escapeHTML(track.id)}" style="animation-delay:${Math.min(index*65,390)}ms">
+      <div class="album-number">${String(index+1).padStart(2,"0")}</div>
+      <div><div class="album-song">${escapeHTML(track.name)}</div>
+        <div class="album-subtitle">${subtitle}</div>
+        ${track.description?`<div class="album-description">${escapeHTML(track.description)}</div>`:""}
+        ${track.details?`<div class="album-details">${escapeHTML(track.details)}</div>`:""}
+      </div>
+      <div class="album-actions">
+        ${track.link?`<button data-action="play" data-id="${escapeHTML(track.id)}">▶ LISTEN ↗</button>`:""}
+        ${isAdmin?`<button data-action="edit" data-id="${escapeHTML(track.id)}">✎ EDIT</button>`:""}
+      </div>
+    </div>`;
+  }).join("");
+}
+function renderAdminPicker(){
+  const picker=$("adminTrackPicker"),previous=picker.value;
+  const before=tracks.filter(track=>track.era==="before").sort((a,b)=>a.name.localeCompare(b.name));
+  const album=getAlbumTracks();
+  picker.innerHTML='<option value="">Select a track...</option>'+
+    before.map(track=>`<option value="${escapeHTML(track.id)}">🟠 BEFORE — ${escapeHTML(track.name)}</option>`).join("")+
+    album.map((track,index)=>`<option value="${escapeHTML(track.id)}">🔵 ALBUM ${String(index+1).padStart(2,"0")} — ${escapeHTML(track.name)}</option>`).join("");
+  if([...before,...album].some(track=>String(track.id)===previous))picker.value=previous;
+}
+function findTrack(id){return tracks.find(track=>String(track.id)===String(id))}
 
-tracks=data.map(cleanTrack);
-
+function openAudio(id){
+  const track=findTrack(id);
+  if(!track||!track.link){showToast("This track doesn't have an audio link yet.");return}
+  try{
+    const url=new URL(track.link);
+    if(!["https:","http:"].includes(url.protocol)){showToast("That audio link isn't valid.");return}
+    window.open(url.href,"_blank","noopener,noreferrer");
+  }catch{showToast("Add a valid audio link in admin.")}
+}
+function resetTrackForm(era="before"){
+  $("trackId").value="";
+  $("trackName").value=era==="album"?"Untitled":"";
+  $("trackEra").value=era;$("trackYear").value="";$("trackDate").value="";
+  $("trackLength").value="";$("trackCategory").value="none";
+  $("trackLink").value="";$("trackDetails").value="";$("trackDescription").value="";
+  $("trackModalTitle").textContent="Add a track";
+}
+function openAddTrack(era){resetTrackForm(era);closeModal("adminModal");openModal("trackModal")}
+function openEditTrack(id){
+  if(!isAdmin){showToast("Unlock admin first.");return}
+  const track=findTrack(id);
+  if(!track){showToast("Track not found.");return}
+  $("trackId").value=track.id;$("trackName").value=track.name;
+  $("trackEra").value=track.era;$("trackYear").value=track.year;
+  $("trackDate").value=track.date;$("trackLength").value=track.length;
+  $("trackCategory").value=track.category;$("trackLink").value=track.link;
+  $("trackDetails").value=track.details;$("trackDescription").value=track.description||"";$("trackModalTitle").textContent="Edit track";
+  closeModal("adminModal");openModal("trackModal");
 }
 
-renderTracks();
-
-}catch(error){
-
-console.error(error);
-
-tracks=defaultTracks.map(cleanTrack);
-
-renderTracks();
-
+async function saveTrack(event){
+  event.preventDefault();
+  if(!isAdmin){showToast("Unlock admin first.");return}
+  const id=$("trackId").value;
+  const era=$("trackEra").value==="album"?"album":"before";
+  const existing=id?findTrack(id):null;
+  const albumOrder=era==="album"?(existing?.album_order||getAlbumTracks().length+1):null;
+  const payload=trackPayload({
+    name:$("trackName").value.trim()||"Untitled",
+    year:$("trackYear").value,date:$("trackDate").value,
+    length:$("trackLength").value.trim(),category:$("trackCategory").value,
+    link:$("trackLink").value.trim(),details:$("trackDetails").value.trim(),
+    description:$("trackDescription").value.trim(),era,album_order:albumOrder
+  });
+  const saveOperation=includeOrder=>{
+    const data={...payload};
+    if(!includeOrder)delete data.album_order;
+    return id?supabaseClient.from("tracks").update(data).eq("id",id):supabaseClient.from("tracks").insert(data);
+  };
+  const result=await writeWithSchemaFallback(saveOperation);
+  if(result.error){
+    console.error(result.error);
+    if(/description.*column|column.*description/i.test(result.error.message||"")){
+      showToast("Add the description column in Supabase, then save again.");
+    }else{
+      showToast("Could not save. Check your Supabase table and permissions.");
+    }
+    return;
+  }
+  closeModal("trackModal");showToast(id?"Track updated ✦":"Track added ✦");
+  await loadTracks();
 }
 
+async function deleteTrack(id){
+  if(!isAdmin){showToast("Unlock admin first.");return}
+  const track=findTrack(id);if(!track)return;
+  if(!confirm(`Delete "${track.name}"? This cannot be undone.`))return;
+  const {error}=await supabaseClient.from("tracks").delete().eq("id",id);
+  if(error){console.error(error);showToast("Could not delete. Check Supabase permissions.");return}
+  showToast("Track deleted.");await loadTracks();
 }
 
-
-/* =========================================================
-   CATEGORY
-   ========================================================= */
-
-function setCategory(category){
-
-currentCategory=category;
-
-document.getElementById("allButton").classList.toggle(
-"active",
-category==="all"
-);
-
-document.getElementById("bestButton").classList.toggle(
-"active",
-category==="best"
-);
-
-document.getElementById("worstButton").classList.toggle(
-"active",
-category==="worst"
-);
-
-renderTracks(true);
-
-}
-
-
-/* =========================================================
-   SORT
-   ========================================================= */
-
-function setSort(sort){
-
-currentSort=sort;
-
-renderTracks(true);
-
-}
-
-
-function compareTracks(a,b){
-
-if(currentSort==="name-az")
-return a.name.localeCompare(b.name);
-
-if(currentSort==="name-za")
-return b.name.localeCompare(a.name);
-
-if(currentSort==="year-new")
-return(Number(b.year)||0)-(Number(a.year)||0);
-
-if(currentSort==="year-old")
-return(Number(a.year)||0)-(Number(b.year)||0);
-
-if(currentSort==="date-new")
-return(b.date||"").localeCompare(a.date||"");
-
-if(currentSort==="date-old")
-return(a.date||"").localeCompare(b.date||"");
-
-return 0;
-
-}
-
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-
-function renderTracks(animated=false){
-
-const wrapper=document.getElementById("tableWrapper");
-
-if(animated){
-
-wrapper.classList.add("category-changing");
-
-clearTimeout(renderTimer);
-
-renderTimer=setTimeout(()=>{
-
-actuallyRender();
-
-requestAnimationFrame(()=>{
-wrapper.classList.remove("category-changing");
+$("adminButton").addEventListener("click",()=>{
+  if(isAdmin){renderAdminPicker();openModal("adminModal")}
+  else{$("adminPassword").value="";openModal("loginModal");setTimeout(()=>$("adminPassword").focus(),50)}
+});
+$("loginForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  // This front-end password is only a visual gate, not secure authentication.
+  if($("adminPassword").value==="start"){
+    isAdmin=true;closeModal("loginModal");
+    $("adminButton").textContent="✳ ADMIN · UNLOCKED";
+    renderAll();openModal("adminModal");showToast("Admin unlocked.");
+  }else showToast("Incorrect password.");
+});
+$("trackForm").addEventListener("submit",saveTrack);
+$("addBeforeButton").addEventListener("click",()=>openAddTrack("before"));
+$("addAlbumButton").addEventListener("click",()=>openAddTrack("album"));
+$("editTrackButton").addEventListener("click",()=>{
+  const id=$("adminTrackPicker").value;
+  if(!id)return showToast("Choose a track first.");
+  openEditTrack(id);
+});
+$("deleteTrackButton").addEventListener("click",()=>{
+  const id=$("adminTrackPicker").value;
+  if(!id)return showToast("Choose a track first.");
+  deleteTrack(id);
 });
 
-},130);
-
-return;
-
-}
-
-actuallyRender();
-
-}
-
-
-function actuallyRender(){
-
-const tbody=document.getElementById("trackTable");
-
-const query=document
-.getElementById("searchInput")
-.value
-.trim()
-.toLowerCase();
-
-tbody.innerHTML="";
-
-
-let visibleTracks=tracks
-.map((track,index)=>({track,index}))
-.filter(x=>x.track.name.toLowerCase().includes(query))
-.filter(x=>
-currentCategory==="all" ||
-x.track.category===currentCategory
-);
-
-
-visibleTracks.sort((a,b)=>
-compareTracks(a.track,b.track)
-);
-
-
-if(!visibleTracks.length){
-
-tbody.innerHTML=`
-<tr>
-<td colspan="7">
-<div class="empty">
-<div class="empty-title">No tracks found</div>
-<div>Try another song name.</div>
-</div>
-</td>
-</tr>`;
-
-return;
-
-}
-
-
-visibleTracks.forEach((item,displayIndex)=>{
-
-const track=item.track;
-const realIndex=item.index;
-
-const row=document.createElement("tr");
-
-row.ondblclick=()=>{
-if(isAdmin)openEditModal(realIndex);
-};
-
-row.oncontextmenu=e=>{
-
-if(!isAdmin)return;
-
-e.preventDefault();
-
-showContextMenu(e,realIndex);
-
-};
-
-
-const icon=
-track.category==="best"
-?"⭐"
-:track.category==="worst"
-?"🗑️"
-:"";
-
-
-const link=track.link
-?`<button class="play-button" onclick="openTrackLink(${realIndex})">▶ Listen</button>`
-:`<span class="muted">—</span>`;
-
-
-row.innerHTML=`
-<td class="track-number">${displayIndex+1}</td>
-<td class="track-name">
-<span class="category-icon">${icon}</span>
-${escapeHTML(track.name)}
-</td>
-<td>${escapeHTML(track.year)}</td>
-<td>${formatDate(track.date)}</td>
-<td>
-${track.details
-?escapeHTML(track.details)
-:'<span class="muted">—</span>'}
-</td>
-<td>${escapeHTML(track.length)}</td>
-<td>${link}</td>
-`;
-
-
-tbody.appendChild(row);
-
+$("searchInput").addEventListener("input",renderTracks);
+$("yearFilter").addEventListener("change",renderTracks);
+$("resetFiltersButton").addEventListener("click",()=>{
+  $("searchInput").value="";
+  $("yearFilter").value="all";
+  activeCategory="all";
+  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.category==="all"));
+  $("sortSelect").value="newest";
+  renderTracks();
+});
+$("sortSelect").addEventListener("change",()=>{
+  const table=$("trackTable");
+  table.classList.remove("filter-refresh");
+  void table.offsetWidth;
+  table.classList.add("filter-refresh");
+  renderTracks();
+});
+document.querySelectorAll(".filter-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    if(button.classList.contains("active"))return;
+    document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.remove("active"));
+    button.classList.add("active");
+    activeCategory=button.dataset.category;
+    const table=$("trackTable");
+    table.classList.remove("filter-refresh");
+    void table.offsetWidth;
+    table.classList.add("filter-refresh");
+    renderTracks();
+  });
 });
 
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-function openLogin(){
-
-document
-.getElementById("loginModal")
-.classList.add("show");
-
-setTimeout(()=>{
-document.getElementById("loginPassword").focus();
-},100);
-
-}
-
-
-function closeLogin(){
-
-document
-.getElementById("loginModal")
-.classList.remove("show");
-
-document.getElementById("loginPassword").value="";
-
-}
-
-
-function login(){
-
-const password=
-document.getElementById("loginPassword").value;
-
-
-if(password===ADMIN_PASSWORD){
-
-isAdmin=true;
-
-closeLogin();
-
-document.getElementById("addButton").style.display="block";
-
-document
-.getElementById("adminIndicator")
-.classList.add("show");
-
-showAdminToast();
-
-renderTracks();
-
-}else{
-
-alert("Wrong password.");
-
-}
-
-}
-
-
-function showAdminToast(){
-
-const t=document.getElementById("adminToast");
-
-t.classList.add("show");
-
-setTimeout(()=>{
-t.classList.remove("show");
-},3500);
-
-}
-
-
-/* =========================================================
-   ADD TRACK
-   ========================================================= */
-
-function openAddModal(){
-
-if(!isAdmin)return;
-
-editingIndex=null;
-
-document.getElementById("modalTitle").textContent="Add Track";
-
-[
-"trackName",
-"trackYear",
-"trackDate",
-"trackLength",
-"trackDetails",
-"trackLink"
-].forEach(id=>{
-document.getElementById(id).value="";
+document.addEventListener("click",event=>{
+  const action=event.target.closest("[data-action]");
+  if(action){
+    const id=action.dataset.id;
+    if(action.dataset.action==="play")openAudio(id);
+    if(action.dataset.action==="edit"&&isAdmin)openEditTrack(id);
+    return;
+  }
+  const row=event.target.closest("tr[data-track-id]");
+  if(row&&isAdmin&&event.detail===2)openEditTrack(row.dataset.trackId);
 });
 
-
-document.getElementById("trackCategory").value="none";
-
-document
-.getElementById("trackModal")
-.classList.add("show");
-
-}
-
-
-/* =========================================================
-   EDIT TRACK
-   ========================================================= */
-
-function openEditModal(index){
-
-if(!isAdmin)return;
-
-editingIndex=index;
-
-const t=tracks[index];
-
-document.getElementById("modalTitle").textContent="Edit Track";
-
-document.getElementById("trackName").value=t.name;
-document.getElementById("trackYear").value=t.year;
-document.getElementById("trackDate").value=t.date;
-document.getElementById("trackLength").value=t.length;
-document.getElementById("trackDetails").value=t.details;
-document.getElementById("trackLink").value=t.link;
-document.getElementById("trackCategory").value=t.category;
-
-document
-.getElementById("trackModal")
-.classList.add("show");
-
-}
-
-
-function closeTrackModal(){
-
-document
-.getElementById("trackModal")
-.classList.remove("show");
-
-}
-
-
-/* =========================================================
-   SAVE TRACK
-   ========================================================= */
-
-async function saveTrack(){
-
-if(!isAdmin)return;
-
-
-const t={
-name:
-document.getElementById("trackName").value.trim()
-||"Untitled",
-
-year:
-document.getElementById("trackYear").value.trim()
-||"—",
-
-date:
-document.getElementById("trackDate").value,
-
-details:
-document.getElementById("trackDetails").value.trim(),
-
-length:
-document.getElementById("trackLength").value.trim()
-||"—",
-
-link:
-document.getElementById("trackLink").value.trim(),
-
-category:
-document.getElementById("trackCategory").value,
-
-era:"before"
-};
-
-
-const button=document.querySelector("#trackModal .main-button");
-
-button.disabled=true;
-button.textContent="Saving...";
-
-
-try{
-
-
-/* ADD */
-
-if(editingIndex===null){
-
-const{data,error}=await supabaseClient
-.from("tracks")
-.insert([{
-name:t.name,
-year:t.year,
-date:t.date,
-details:t.details,
-length:t.length,
-link:t.link,
-category:t.category,
-era:"before"
-}])
-.select()
-.single();
-
-
-if(error)throw error;
-
-tracks.push(cleanTrack(data));
-
-}
-
-
-/* EDIT */
-
-else{
-
-const existing=tracks[editingIndex];
-
-const{data,error}=await supabaseClient
-.from("tracks")
-.update({
-name:t.name,
-year:t.year,
-date:t.date,
-details:t.details,
-length:t.length,
-link:t.link,
-category:t.category,
-era:"before"
-})
-.eq("id",existing.id)
-.select()
-.single();
-
-
-if(error)throw error;
-
-tracks[editingIndex]=cleanTrack(data);
-
-}
-
-
-closeTrackModal();
-
-renderTracks();
-
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"Could not save the track.\n\nPlease check that your Supabase database is connected."
-);
-
-}finally{
-
-button.disabled=false;
-button.textContent="Save Track";
-
-}
-
-}
-
-
-/* =========================================================
-   OPEN WHYP LINK
-   ========================================================= */
-
-function openTrackLink(index){
-
-const link=tracks[index].link;
-
-if(!link)return;
-
-if(
-link.startsWith("https://") ||
-link.startsWith("http://")
-){
-
-window.open(link,"_blank");
-
-}else{
-
-alert("Please use a full https:// link.");
-
-}
-
-}
-
-
-/* =========================================================
-   CONTEXT MENU
-   ========================================================= */
-
-function showContextMenu(e,index){
-
-contextIndex=index;
-
-const m=document.getElementById("contextMenu");
-
-m.style.display="block";
-
-m.style.left=e.clientX+"px";
-m.style.top=e.clientY+"px";
-
-}
-
-
-function hideContextMenu(){
-
-document
-.getElementById("contextMenu")
-.style.display="none";
-
-}
-
-
-function contextEdit(){
-
-if(contextIndex===null||!isAdmin)return;
-
-const i=contextIndex;
-
-hideContextMenu();
-
-openEditModal(i);
-
-}
-
-
-async function contextDelete(){
-
-if(contextIndex===null||!isAdmin)return;
-
-const i=contextIndex;
-const track=tracks[i];
-
-if(!track)return;
-
-const name=track.name;
-
-hideContextMenu();
-
-
-if(!confirm('Delete "'+name+'"?'))return;
-
-
-try{
-
-const{error}=await supabaseClient
-.from("tracks")
-.delete()
-.eq("id",track.id);
-
-if(error)throw error;
-
-tracks.splice(i,1);
-
-renderTracks();
-
-}catch(error){
-
-console.error(error);
-
-alert("Could not delete the track.");
-
-}
-
-}
-
-
-/* =========================================================
-   CLOSE MENUS
-   ========================================================= */
-
-document.addEventListener("click",e=>{
-
-const m=document.getElementById("contextMenu");
-
-if(!m.contains(e.target))
-hideContextMenu();
-
+const contextMenu=$("contextMenu");
+document.addEventListener("contextmenu",event=>{
+  const row=event.target.closest("tr[data-track-id]");
+  if(!row||!isAdmin)return;
+  event.preventDefault();contextTrackId=row.dataset.trackId;
+  contextMenu.style.left=Math.min(event.clientX,window.innerWidth-180)+"px";
+  contextMenu.style.top=Math.min(event.clientY,window.innerHeight-100)+"px";
+  contextMenu.classList.add("open");
+});
+document.addEventListener("click",event=>{
+  if(!event.target.closest("#contextMenu"))contextMenu.classList.remove("open");
+});
+$("contextEditButton").addEventListener("click",()=>{
+  contextMenu.classList.remove("open");
+  if(contextTrackId)openEditTrack(contextTrackId);
+});
+$("contextOpenButton").addEventListener("click",()=>{
+  contextMenu.classList.remove("open");
+  if(contextTrackId)openAudio(contextTrackId);
 });
 
+/* Background transitions near the album; each section keeps its own colors. */
+function updateScrollTheme(){
+  const album=$("albumSection");
+  if(!album)return;
+  document.body.classList.toggle("album-past",album.getBoundingClientRect().top<window.innerHeight*.72);
+}
+function scheduleScrollTheme(){
+  if(scrollFrame!==null)return;
+  scrollFrame=requestAnimationFrame(()=>{
+    updateScrollTheme();scrollFrame=null;
+  });
+}
+window.addEventListener("scroll",scheduleScrollTheme,{passive:true});
+window.addEventListener("resize",scheduleScrollTheme);
 
-document
-.getElementById("loginModal")
-.addEventListener("click",e=>{
+/* Scroll reveals */
+const revealItems=document.querySelectorAll(".reveal");
+if("IntersectionObserver" in window){
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.06,rootMargin:"0px 0px -25px 0px"});
+  revealItems.forEach(item=>observer.observe(item));
+}else revealItems.forEach(item=>item.classList.add("is-visible"));
 
-if(e.target===e.currentTarget)
-closeLogin();
-
-});
-
-
-document
-.getElementById("trackModal")
-.addEventListener("click",e=>{
-
-if(e.target===e.currentTarget)
-closeTrackModal();
-
-});
-
-
-/* =========================================================
-   ALBUM BLUE SECTION
-   ========================================================= */
-
-const albumSection=
-document.getElementById("albumComingSoon");
-
-
-const albumObserver=
-new IntersectionObserver(entries=>{
-
-entries.forEach(entry=>{
-
-document.body.classList.toggle(
-"album-near",
-entry.isIntersecting
-);
-
-});
-
-},{threshold:.18});
-
-
-albumObserver.observe(albumSection);
-
-
-/* =========================================================
-   START
-   ========================================================= */
-
+updateScrollTheme();
 loadTracks();
-
+})();
 </script>
-
 </body>
 </html>
