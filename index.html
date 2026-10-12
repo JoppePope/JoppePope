@@ -721,7 +721,7 @@ body { padding-bottom: 112px; }
 const SUPABASE_URL = "https://ylgkbggnrymsnyuuvksf.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_akS38WHr22fSNq7JGTNeeA_M6MhVC1y";
 // Set this to the email of the admin user you create in Supabase Authentication. This is not a password.
-const ADMIN_EMAIL = "YOUR_ADMIN_EMAIL_HERE".toLowerCase();
+const ADMIN_EMAIL = "jonathan.ks.horn@gmail.com".toLowerCase();
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const defaultBeforeTracks = [{
@@ -1390,7 +1390,7 @@ $("resetSettingsButton").addEventListener("click",()=>applySettings("orange",fal
 async function applyAuthSession(){
   const {data}=await supabaseClient.auth.getSession();
   const user=data?.session?.user;
-  isAdmin=Boolean(user && ADMIN_EMAIL!=="your_admin_email_here" && String(user.email||"").toLowerCase()===ADMIN_EMAIL);
+  isAdmin=Boolean(user && String(user.email||"").toLowerCase()===ADMIN_EMAIL);
   if(isAdmin){$("adminButton").textContent="✳ ADMIN · UNLOCKED";}else{$("adminButton").textContent="✳ ADMIN";}
 }
 supabaseClient.auth.onAuthStateChange(()=>{setTimeout(applyAuthSession,0)});
@@ -1401,7 +1401,6 @@ $("adminButton").addEventListener("click",async()=>{
 });
 $("loginForm").addEventListener("submit",async event=>{
   event.preventDefault();
-  if(ADMIN_EMAIL==="your_admin_email_here")return showToast("Set ADMIN_EMAIL in the HTML first.");
   const email=$("adminEmail").value.trim().toLowerCase();
   if(email!==ADMIN_EMAIL)return showToast("That account is not the configured admin.");
   const {error}=await supabaseClient.auth.signInWithPassword({email,password:$("adminPassword").value});
